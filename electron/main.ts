@@ -1,8 +1,7 @@
-import { app, BrowserWindow } from 'electron'
-import path from 'node:path'
-import { setUpShortcut } from './Utilities/util'
-import { setUpDirectoryManager } from './api/expose'
+import { app, BrowserWindow, ipcMain } from 'electron'
 
+import path from 'node:path'
+import { setUpMouseListeners, setUpShortcut } from './util/util'
 
 // The built directory structure
 //
@@ -27,12 +26,17 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
-    transparent: true,
     frame:false,
-    skipTaskbar:true
-    
+    transparent:true, //false fornow
+    skipTaskbar:true,
+    fullscreen:true,
+    show:false, //when starting 
   })
 
+  win?.setVisibleOnAllWorkspaces(true, {visibleOnFullScreen:true})
+  win.setAlwaysOnTop(true, "normal")
+
+  
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
     win?.webContents.send('main-process-message', (new Date).toLocaleString())
@@ -45,10 +49,6 @@ function createWindow() {
     win.loadFile(path.join(process.env.DIST, 'index.html'))
   }
 }
-
-//Make directory managing functions available on the front end
-setUpDirectoryManager()
-
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -68,9 +68,25 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(()=>{
-  createWindow(),
-  win?.hide()
-  setUpShortcut(win, true)         
-})
 
+function startApp(){
+  //Create the actual window
+  createWindow()
+
+  //Opening dev tools
+  win?.webContents.openDevTools({mode:"detach"})
+
+  //attaching shortcuts
+  setUpShortcut("Alt+M", win)
+
+
+  
+
+  //set up mouse listeners
+  setUpMouseListeners(win)
+}
+
+
+
+
+app.whenReady().then(startApp)
