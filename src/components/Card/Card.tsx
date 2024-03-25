@@ -1,14 +1,20 @@
-import React, { useRef } from "react";
-import "./Card.css";
-import Draggable from "react-draggable";
 
-type childrenProp = {
+import "./Card.css";
+
+import { motion } from "framer-motion";
+export type childrenProp = {
   children: React.ReactNode;
 };
 
 export default function Card({ children }: childrenProp) {
 
-    const ref = useRef(null);
+
+  const draggingSettings = {
+    top: -300,
+    left: -520,
+    right: 520,
+    bottom: 300,
+  }
 
 
   function handleMouseEnter() {
@@ -21,24 +27,26 @@ export default function Card({ children }: childrenProp) {
     window.ipcRenderer.invoke("mouseLeave");
   }
 
+
+
   return (
-    <Draggable nodeRef={ref}
-        bounds="parent"
-        handle=".card"
-        defaultPosition={{x: 0, y: 0}}
-        
-        
-        scale={1}
-        >
-        
+    <motion.div
+      drag
+      dragConstraints={
+        draggingSettings
+      }
+      whileDrag={{scale:0.9}}
+      
+    >
       <div
-        ref={ref}
+
         className="card"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {children}
       </div>
-    </Draggable>
+    </motion.div>
+    
   );
 }

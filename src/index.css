@@ -4,5 +4,13 @@ html, body{
     margin: 0;
     padding: 0;
     background-color: rgba(240, 248, 255, 0);
-    /* overflow: hidden; */
+    overflow: hidden;
+
+    /* Color definitions */
+    --primary-color: #5356FF;
+    --secondary-color: #378CE7;
+    --ternary-color: #67C6E3;
+    --quaternary-color: #DFF5FF;
+
 }
+

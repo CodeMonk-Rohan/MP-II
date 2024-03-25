@@ -1,0 +1,18 @@
+.main-menu-icon{
+    outline: none;
+    border: none;
+    background-color: transparent;
+    max-width: 2vw;
+    display: flex;
+    
+    
+}
+
+
+.main-menu-icon-box{
+    padding: 0.2ch;
+    border: 2px solid var(--primary-color);
+    background-color: var(--quaternary-color);
+    border-radius: 10px;
+    
+}

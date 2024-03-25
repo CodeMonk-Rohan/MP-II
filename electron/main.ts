@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow} from 'electron'
 
 import path from 'node:path'
-import { setUpMouseListeners, setUpShortcut } from './util/util'
+import { createDataFolder, setUpMouseListeners, setUpShortcut } from './util/util'
+import { setUpDirectoryManager } from './util/expose'
 
 // The built directory structure
 //
@@ -25,12 +26,13 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      webSecurity:false
     },
     frame:false,
-    transparent:true, //false fornow
+    transparent:true, 
     skipTaskbar:true,
     fullscreen:true,
-    show:false, //when starting 
+    show:true, //when starting 
   })
 
   win?.setVisibleOnAllWorkspaces(true, {visibleOnFullScreen:true})
@@ -70,6 +72,14 @@ app.on('activate', () => {
 
 
 function startApp(){
+
+  // // Creating the protocol for allowing mp3 files to be accessed securely
+  // setUpFileProtocol("cprotocol:/")
+  // Create/Verify the existence of the data folders
+  createDataFolder()
+
+  setUpDirectoryManager()
+
   //Create the actual window
   createWindow()
 
@@ -82,7 +92,7 @@ function startApp(){
 
   
 
-  //set up mouse listeners
+  //set up mouse listeners (this ensures that the mouse events are ignore if its not within the application)
   setUpMouseListeners(win)
 }
 

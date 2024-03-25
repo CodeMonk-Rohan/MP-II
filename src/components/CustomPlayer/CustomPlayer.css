@@ -1,0 +1,4 @@
+.custom-player{
+    display: flex;
+    flex-direction: column;
+}

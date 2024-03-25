@@ -1,0 +1,21 @@
+.side-menu{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--secondary-color);
+    align-items: center;
+
+    height: 3vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+
+    /* need to choose a better fucking color pallete */
+    /* border-top: 1vh solid var(--ternary-color); */
+    /* background-color: rgba(20, 20, 20, 0.327); */
+
+    justify-content: space-evenly;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+
+    z-index: 2;
+}

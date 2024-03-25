@@ -1,0 +1,18 @@
+.screen-main{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+    color:antiquewhite;
+    background-color: var(--primary-color);
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    border-radius: 100vw;
+    
+    z-index: 1;
+}
