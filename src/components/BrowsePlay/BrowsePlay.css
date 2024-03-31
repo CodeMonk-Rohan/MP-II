@@ -1,0 +1,131 @@
+body {
+   --accent: #fafafa;
+  margin: 0;
+  padding: 0;
+  background: none;
+  color: var(--accent);
+  
+}
+
+#root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+}
+
+* {
+
+  -webkit-font-smoothing: antialiased;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  height: 14vh;
+  width: 25vw;
+  padding: 20px 0;
+  margin: 0 ;
+  overflow-x: scroll;
+  padding-left: 1%;
+  padding-right: 1%;
+  border-radius: 25px;
+}
+
+
+::-webkit-scrollbar {
+  display: flex;
+  /* border: 2px solid; */
+  height: 10px;
+  width: 12px;
+  background: rgba(255, 255, 255, 0.096);
+  border-radius: 1ex;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(252, 224, 224, 0.733);
+  border-radius: 1ex;
+}
+
+::-webkit-scrollbar-corner {
+  background: #fff3;
+}
+
+li {
+  flex: 0 0 120px;
+  background: var(--accent);
+  margin: 0 30px 0 0;
+  border-radius: 15px;
+  opacity: 0.94;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+
+}
+
+li:last-of-type {
+  margin: 0;
+}
+
+.add-data{
+  display: flex;
+  flex-direction: column;
+  margin-left: 2.5px;
+  width: 6vw;
+}
+
+.add-butt{
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center;
+  justify-items: center; */
+  margin-left: 27.5%;
+  border-radius: 10px;
+  margin-bottom: 8%;
+  background: none;
+  border: none;
+}
+/* .add-ul{
+  border: 1px solid;
+  padding-left: 1%;
+  padding-right: 1%;
+  border-radius: 25px;
+} */
+.add-li{
+  padding-top: 4%;
+  border-radius: 15px;
+  opacity: 0.94;
+}
+.add-button{
+  height: 35px;
+  border: 2px solid rgba(0, 0, 0, 0.829);
+  border-radius: 100%;
+  cursor: pointer;
+}
+.add-button:active{
+  opacity: 0.9;
+}
+.txt-box{
+  margin-top: 4px;
+  border-radius: 28px ;
+  margin-bottom: 5px;
+  border: 1px  rgba(0, 0, 0, 0.274);
+  outline: none;
+  font-size: 12px;
+  font-family: Arial;
+  width: 60%;
+  margin-left: 16.5%;
+  background-color: rgba(0, 78, 247, 0.137);
+  transition: box-shadow 0.35s;
+ 
+}
+.txt-box::placeholder{
+  color: rgba(0, 0, 0, 0.548);
+  font-size: 9px; 
+  padding-left: 16%;
+}
+.txt-box:focus-within{
+  box-shadow: 0 0 2px rgba(47, 0, 255, 0.767);
+  
+}

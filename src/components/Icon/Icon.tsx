@@ -1,6 +1,6 @@
 import "./Icon.css";
 import { motion } from "framer-motion";
-import settingsButton from "../../assets/settings-button.svg";
+import homeButton from "../../../src/assets/home-button.svg"
 
 
 type customFunc = {
@@ -23,11 +23,11 @@ export default function Icon({setter, name}:customFunc) {
     >
       <motion.img
         className="main-menu-icon"
-        src={settingsButton}
+        src={homeButton}
         whileHover={{
-          scale: 1.3,
+          scale: 1.1,
            
-          rotate: 360,
+          // rotate: 360,
         }}
         transition={{ duration: 5, loop: Infinity, ease: "circOut"}}
         draggable={false}

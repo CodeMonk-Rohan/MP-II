@@ -16,10 +16,9 @@ export default function Menu({setter}: childFunc) {
       transition={{ duration: 0.3, delay: 1 }}
     >
     
-        <Icon setter={setter} name="player"/>
-        <Icon setter={setter} name="settings"/>
-        <Icon setter={setter} name=""/>
-        <Icon setter={setter} name=""/>
+        <Icon setter={setter} name="Browse"/>
+        <Icon setter={setter} name="Player"/>
+        <Icon setter={setter} name="Queue"/>
       
     </motion.div>
   );

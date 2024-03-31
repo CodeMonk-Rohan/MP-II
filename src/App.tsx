@@ -5,6 +5,8 @@ import Menu from "./components/Menu/Menu";
 import ScreenWrapper from "./components/ScreenWrapper/ScreenWrapper";
 import { AnimatePresence } from "framer-motion";
 import CustomPlayer from "./components/CustomPlayer/CustomPlayer";
+import BrowsePlay from "./components/BrowsePlay/BrowsePlay";
+import Queue from "./components//Queue/Queue";
 
 
 
@@ -20,11 +22,14 @@ function App() {
     //   return ""
     // }
     switch (target){
-      case 'player':
+      case 'Browse':
+        return <ScreenWrapper children={<BrowsePlay/>}/>
+
+      case 'Player':
         return <ScreenWrapper children={<CustomPlayer/>}/>
 
-      case 'settings':
-        return <ScreenWrapper children={<>Settings is not implemented</>}/>
+       case 'Queue':
+        return <ScreenWrapper children={<Queue/>}/>
     }
   }
 
@@ -64,8 +69,8 @@ function App() {
           </AnimatePresence>
           <Menu setter={setActive}/>
           {/* <button onClick={()=>downloadPlaylist()}>DOWNLOAD</button> */}
-          <button onClick={()=>{fetchAllPlaylists()}}>Fetch All Playlists</button>
-          <button onClick={()=>{fetchSongs("Test")}}>Fetch All Songs</button>
+          {/* <button onClick={()=>{fetchAllPlaylists()}}>Fetch All Playlists</button> */}
+          {/* <button onClick={()=>{fetchSongs("Test")}}>Fetch All Songs</button> */}
         </Card>
         
       </div>
