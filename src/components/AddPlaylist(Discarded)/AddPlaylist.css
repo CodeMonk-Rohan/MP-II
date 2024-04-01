@@ -1,0 +1,23 @@
+.main-box{
+    display: flex;
+    flex-direction: row;
+    max-height: 18vh;
+}
+.add-playlist{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid;
+    margin-left: 10px;
+    justify-items: center;
+}
+.browse-playlist{
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+  
+    
+}
+ol{
+    overflow: hidden;
+    overflow-y: scroll;
+}

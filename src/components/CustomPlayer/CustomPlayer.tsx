@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import "./CustomPlayer.css";
 import {motion} from "framer-motion"
+import { FaPlay, FaPause } from 'react-icons/fa';
+import next from "../../assets/next-button.svg"
+import prev from "../../assets/prev-button.svg"
+
 
 export default function CustomPlayer() {
   const MUSIC_PATH_TEMP =
-    "C:/Users/Admin/Desktop/MP-II/Database/Fly me to the moon 王OK.mp3";
+    "C:\\Users\\Rohan\\Downloads\\Future, Metro Boomin - Like That (Official Audio).mp3";
   const audioElem = useRef<HTMLAudioElement>(null);
 
   //Important variables needed to be kept in useState
@@ -92,22 +96,47 @@ export default function CustomPlayer() {
 
 
   return (
-    <div className="custom-player"
-    onPointerDownCapture={(e) => e.stopPropagation()}
-    >
-        
-      This is the player
-      <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio>
-      <button onClick={handleMusicToggle}>Play/Pause</button>
-      <button onClick={handleMusicToggle}>LOG</button>
-      <motion.div onPointerDown={(e)=>e.stopPropagation()}>
-      <input type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
-      </motion.div>
-      <div>Duration: {convertToHumanReadable(duration)}</div>
-      <div>Current time: {convertToHumanReadable(currentTime)}</div>
-      <motion.div onPointerDown={(e)=>e.stopPropagation()}>
-      <input type="range" min={0.0} max={1.0} step="0.01" value={volume} onChange={handleVolume}></input>
-      </motion.div>
-    </div>
+    <motion.div className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{
+      duration: 0.8,
+      delay: 0,
+      ease: [0, 0.71, 0.2, 1.01]
+    }}>
+          
+        <p onPointerDownCapture={(e) => e.stopPropagation()}>Audio Name Here</p>
+        <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio>
+      
+        <motion.div>
+        <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
+        </motion.div>
+
+        <div className="timestamp">
+        <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
+        <div className="duration-time"> {convertToHumanReadable(duration)}</div>
+        </div>
+
+        <div className="control">
+                <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                  <img className="prev-butt" src={prev}></img>
+                </motion.button>
+                <div onPointerDownCapture={(e) => e.stopPropagation()} className="playpause-button"onClick={handleMusicToggle} style={{ cursor: 'pointer' }}>
+                  <motion.div 
+                    initial={false}
+                    animate={{ scale: isPlaying ? 0.9 : 1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
+                  </motion.div>
+                </div>
+                <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                  <img className="next-butt" src={next}></img>
+                </motion.button>
+        </div>
+
+            <motion.div onPointerDownCapture={(e) => e.stopPropagation()} className="vol-div" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+            <input type="range" min={0.0} max={1.0} step="0.01" value={volume} onChange={handleVolume} className="vol-bar"></input>
+            </motion.div>
+    </motion.div>
   );
 }
