@@ -5,17 +5,41 @@ import Menu from "./components/Menu/Menu";
 import ScreenWrapper from "./components/ScreenWrapper/ScreenWrapper";
 import { AnimatePresence } from "framer-motion";
 import CustomPlayer from "./components/CustomPlayer/CustomPlayer";
-import BrowsePlay from "./components/BrowsePlay/BrowsePlay";
+import BrowsePlay, { playlist } from "./components/BrowsePlay/BrowsePlay";
 import Queue from "./components//Queue/Queue";
 
 
-
+export type song = {
+  name:string,
+  path:string
+}
 
 function App() {
 
   //Not going into complicated routing, as there's only a small set of screens (if you can call it that) to be had here
     
   const [active, setActive] = useState<string>("")
+  const [playlistData, setPlaylistData] = useState<playlist[]>([])
+  const [currentPlaylist, setCurrentPlaylist] = useState<song[]>([])
+
+  useEffect(()=>{
+    async function fetchAllPlaylists() {
+      const data = await window.ipcRenderer.invoke("fetchAllPlaylists")    
+      await setPlaylistData(data)
+      await fetchSongs(data[0].name)
+      console.log(currentPlaylist)
+    }
+
+    fetchAllPlaylists()
+
+    async function fetchSongs(playlist:string) {
+      const data = await window.ipcRenderer.invoke(fetchSongs.name, playlist)
+      console.log(data)
+      setCurrentPlaylist(data)
+    }
+
+  }, [])
+
   
   function getActiveComponent(target: string){
     // if(target===active){
@@ -23,13 +47,13 @@ function App() {
     // }
     switch (target){
       case 'Browse':
-        return <ScreenWrapper children={<BrowsePlay/>}/>
+        return <ScreenWrapper children={<BrowsePlay data={playlistData} />}/>
 
       case 'Player':
         return <ScreenWrapper children={<CustomPlayer/>}/>
 
        case 'Queue':
-        return <ScreenWrapper children={<Queue/>}/>
+        return <ScreenWrapper children={<Queue data={currentPlaylist}/>}/>
     }
   }
 
@@ -50,16 +74,8 @@ function App() {
   //   }
   // }
 
-  async function fetchAllPlaylists() {
-    const data = await window.ipcRenderer.invoke("fetchAllPlaylists")    
-    console.log(data);
-    
   
-  }
-  async function fetchSongs(playlist:string) {
-    const data = await window.ipcRenderer.invoke(fetchSongs.name, playlist)
-    console.log(data)
-  }
+  
   return (
     <>
       <div className="main-area">
