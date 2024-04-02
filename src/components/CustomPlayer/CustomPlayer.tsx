@@ -5,6 +5,7 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 import next from "../../assets/next-button.svg"
 import prev from "../../assets/prev-button.svg"
 import { song } from "../../App";
+import { FiSearch } from 'react-icons/fi';
 
 
 type customPlayer = {
@@ -14,7 +15,7 @@ type customPlayer = {
 
 
 export default function CustomPlayer({audioRef}:customPlayer) {
-  const MUSIC_PATH_TEMP = "C:\\Users\\Admin\\Desktop\\MP-II\\MP-II\\dist-electron\\data\\Test\\a french girl singing je te laisserai des mots while it's raining ：').mp3"
+  const MUSIC_PATH_TEMP = "C:\\Users\\Rohan\\Downloads\\Future, Metro Boomin - Like That (Official Audio).mp3"
   
     //This only exists because of difficulty in manual refactor, toomany similar words to run a simple refactor
     const audioElem = audioRef
@@ -106,48 +107,79 @@ export default function CustomPlayer({audioRef}:customPlayer) {
   
 
   return (
-    <motion.div className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.8,
-      delay: 0,
-      ease: [0, 0.71, 0.2, 1.01]
-    }}>
-          
-        <p onPointerDownCapture={(e) => e.stopPropagation()}>Audio Name Here</p>
-        <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio>
-      
-        <motion.div>
-        <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
-        </motion.div>
+      <> 
+            
+            <motion.div className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 0.8,
+                delay: 0,
+                ease: [0, 0.71, 0.2, 1.01]
+              }}>
+                <div className="player-card">
 
-        <div className="timestamp">
-        <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
-        <div className="duration-time"> {convertToHumanReadable(duration)}</div>
-        </div>
-
-        <div className="control">
-                <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
-                  <img className="prev-butt" src={prev}></img>
-                </motion.button>
-                <div onPointerDownCapture={(e) => e.stopPropagation()} className="playpause-button"onClick={handleMusicToggle} style={{ cursor: 'pointer' }}>
-                  <motion.div 
-                    initial={false}
-                    animate={{ scale: isPlaying ? 0.9 : 1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
-                  </motion.div>
-                </div>
-                <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
-                  <img className="next-butt" src={next}></img>
-                </motion.button>
+                  <p className="song-name">Audio Name Here</p>
+                  <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio>
                 
-        </div>
+                  <motion.div>
+                  <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
+                  </motion.div>
 
-            <motion.div onPointerDownCapture={(e) => e.stopPropagation()} className="vol-div" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
-            <input type="range" min={0.0} max={1.0} step="0.01" value={volume} onChange={handleVolume} className="vol-bar"></input>
+                  <div className="timestamp">
+                  <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
+                  <div className="duration-time"> {convertToHumanReadable(duration)}</div>
+                  </div>
+
+                  <div className="control">
+
+                      <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                          <img className="prev-butt" src={prev}></img>
+                      </motion.button>
+
+                        <div onPointerDownCapture={(e) => e.stopPropagation()} className="playpause-button"onClick={handleMusicToggle} style={{ cursor: 'pointer' }}>
+                      <motion.div 
+                          initial={false}
+                          animate={{ scale: isPlaying ? 0.9 : 1 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                              {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
+                            </motion.div>
+                          </div>
+                        <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                          <img className="next-butt" src={next}></img>
+                        </motion.button>
+                        
+                </div>
+
+                    <motion.div onPointerDownCapture={(e) => e.stopPropagation()} className="vol-div" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.8 }}>
+                    <input type="range" min={0.0} max={1.0} step="0.01" value={volume} onChange={handleVolume} className="vol-bar"></input>
+                    </motion.div>
+              </div>
+
+              <motion.div className="queue-card" whileHover={{ scale: 1.04 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+                  
+                  <div className="q-card-search">
+                  <input className="q-searchbox" type="text" placeholder="Search" onPointerDownCapture={(e) => e.stopPropagation()}></input>
+                   <button className='q-search-icon'><FiSearch /></button>
+                  </div>
+
+                  <div className="main-queue-list">
+                    <ol className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
+                                      <button className="q-item-names"><li >Hello world how we doing </li></button>
+                                      <button className="q-item-names"><li >Hello </li></button>
+                                      <button className="q-item-names"><li >Hello </li></button>
+                                      <button className="q-item-names"><li >Hello </li></button>
+                                      <button className="q-item-names"><li >Hello </li></button>
+                                   
+                    </ol>
+                  </div>
+
+              </motion.div>
+
             </motion.div>
-    </motion.div>
+
+
+    </>   
   );
 }
