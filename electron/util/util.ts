@@ -117,7 +117,16 @@ export function fetchSongs(playlist: string) {
 }
 
 export async function downloadPlaylist(url: string, name: string) {
-  // Invoke yt-dlp python scripts, with the global data path defined above
+
+  if (url.length == 0 || name.length==0){
+    console.log("Empty fields, stopping creation of creation of subprocess");
+    
+    return
+  }
+
+
+
+  // Invoke yt-dlp python scripts
   // Also write to the userfile
   const dataToAdd = "\n" + name + "|sep|" + url;
   // Just a simple regex to replace the backward slash paths with the forward slashes, as it can cause errors in python due to \s
@@ -126,7 +135,7 @@ export async function downloadPlaylist(url: string, name: string) {
   const downloadScript = pythonDir.replace(/\\/g, "/");
 
   try {
-    const data = fs.appendFileSync(userFile, dataToAdd);
+    const data = await fs.appendFileSync(userFile, dataToAdd);
 
     //Python process to be called here
     console.log("calling process...");
@@ -148,7 +157,7 @@ export async function downloadPlaylist(url: string, name: string) {
       console.error('Failed to start Python process:', err);
     });
     //return?
-    // return data;
+    return data;
   } catch (err) {
     console.log(err);
   }

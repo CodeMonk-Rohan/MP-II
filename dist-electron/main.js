@@ -71,10 +71,14 @@ function fetchSongs(playlist) {
   }
 }
 async function downloadPlaylist(url, name) {
+  if (url.length == 0 || name.length == 0) {
+    console.log("Empty fields, stopping creation of creation of subprocess");
+    return;
+  }
   const dataToAdd = "\n" + name + "|sep|" + url;
   const downloadScript = pythonDir.replace(/\\/g, "/");
   try {
-    const data = fs.appendFileSync(userFile, dataToAdd);
+    const data = await fs.appendFileSync(userFile, dataToAdd);
     console.log("calling process...");
     const pythonProcess = spawn("python", [
       downloadScript,
@@ -88,6 +92,7 @@ async function downloadPlaylist(url, name) {
     pythonProcess.on("error", (err) => {
       console.error("Failed to start Python process:", err);
     });
+    return data;
   } catch (err) {
     console.log(err);
   }

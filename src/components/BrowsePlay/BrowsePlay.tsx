@@ -38,7 +38,9 @@ export default function BrowsePlay({data}:data) {
 
   async function downloadPlaylist(URL: string, PlaylistName:string) {
     try {
-      await window.ipcRenderer.invoke("downloadPlaylist", PlaylistName, URL);
+      const data = await window.ipcRenderer.invoke("downloadPlaylist", PlaylistName, URL);
+      console.log(data);
+      
       // setClicked(!clicked);
     } catch (err) {
       console.log("--------------------Between--------Dwnld-----------------------");
