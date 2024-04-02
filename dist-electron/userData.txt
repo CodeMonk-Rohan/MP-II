@@ -1,5 +1,2 @@
-my songs|sep|https://www.youtube.com/playlist?list=PLAtpKAUoxXifewNw-KcqH_lafYGC343sc
-doraemon|sep|https://youtube.com/playlist?list=PLAtpKAUoxXifewNw-KcqH_lafYGC343sc&si=nvTZoDWounY-BA_H
-susPlaylist|sep|https://youtube.com/playlist?list=PLAtpKAUoxXifewNw-KcqH_lafYGC343sc&si=nvTZoDWounY-BA_H
-doraemon|sep|https://youtube.com/playlist?list=PLAtpKAUoxXifewNw-KcqH_lafYGC343sc&si=0p70tQ8e3tB2ZcPk
-doraemon|sep|https://www.youtube.com/watch?v=EHGsGJ4V3ZA&list=PLAtpKAUoxXifewNw-KcqH_lafYGC343sc
+TestAgain|sep|https://youtube.com/playlist?list=PLAtpKAUoxXifewNw-KcqH_lafYGC343sc&si=akTyLppJw8Mk40yA
+New playlist|sep|https://www.youtube.com/playlist?list=PLAtpKAUoxXic6XroxqWVp65Ie9aJCbILl

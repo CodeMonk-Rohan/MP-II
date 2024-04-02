@@ -14,6 +14,7 @@ export type song = {
   path:string
 }
 
+
 type mainScreenProps = {
     audioRef: React.RefObject<HTMLAudioElement>
 }
@@ -33,9 +34,11 @@ function MainScreen({audioRef}:mainScreenProps) {
       const data = await window.ipcRenderer.invoke("fetchAllPlaylists") 
       //Read userdata file and load every playlist written into it.   
       await setPlaylistData(data)
-
+      console.log(data)
       //After loading that data, load the first playlist
-      await fetchSongs(data[0].name)
+      if (data[0]){
+        await fetchSongs(data[0].name)
+      }
       // console.log(currentPlaylist)
     }
 
@@ -59,7 +62,7 @@ function MainScreen({audioRef}:mainScreenProps) {
     // }
     switch (target){
       case 'Browse':
-        return <ScreenWrapper children={<BrowsePlay data={playlistData} />}/>
+        return <ScreenWrapper children={<BrowsePlay data={playlistData} changeScreen={setActive} changePlaylist={setCurrentPlaylist} setPlaylistData={setPlaylistData}/>}/>
 
       case 'Player':
         return <ScreenWrapper children={<CustomPlayer audioRef={audioRef} currentPlaylist={currentPlaylist}/>}/>

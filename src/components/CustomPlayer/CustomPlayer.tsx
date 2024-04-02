@@ -13,12 +13,12 @@ type customPlayer = {
 }
 
 
-export default function CustomPlayer({audioRef}:customPlayer) {
-  const MUSIC_PATH_TEMP = "C:\\Users\\Admin\\Desktop\\MP-II\\MP-II\\dist-electron\\data\\Test\\a french girl singing je te laisserai des mots while it's raining ：').mp3"
+export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
   
-    //This only exists because of difficulty in manual refactor, toomany similar words to run a simple refactor
-    const audioElem = audioRef
-
+  //This only exists because of difficulty in manual refactor, toomany similar words to run a simple refactor
+  const audioElem = audioRef
+  
+  
   //Important variables needed to be kept in useState
   const [isPlaying, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -31,7 +31,7 @@ export default function CustomPlayer({audioRef}:customPlayer) {
     //initialising the audio element with the constraints provided
     if(audioElem.current){
       audioElem.current.volume = volume;
-      audioElem.current.src = MUSIC_PATH_TEMP
+      audioElem.current.src = currentPlaylist[0].path
     }
 
     function updateTime(){
@@ -114,8 +114,8 @@ export default function CustomPlayer({audioRef}:customPlayer) {
       ease: [0, 0.71, 0.2, 1.01]
     }}>
           
-        <p onPointerDownCapture={(e) => e.stopPropagation()}>Audio Name Here</p>
-        <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio>
+        <p onPointerDownCapture={(e) => e.stopPropagation()}>{currentPlaylist[0]?.name}</p>
+        {/* <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio> */}
       
         <motion.div>
         <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
