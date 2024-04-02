@@ -4,12 +4,20 @@ import {motion} from "framer-motion"
 import { FaPlay, FaPause } from 'react-icons/fa';
 import next from "../../assets/next-button.svg"
 import prev from "../../assets/prev-button.svg"
+import { song } from "../../App";
 
 
-export default function CustomPlayer() {
-  const MUSIC_PATH_TEMP =
-    "C:\\Users\\Rohan\\Downloads\\Future, Metro Boomin - Like That (Official Audio).mp3";
-  const audioElem = useRef<HTMLAudioElement>(null);
+type customPlayer = {
+  audioRef:React.RefObject<HTMLAudioElement>,
+  currentPlaylist: song[]
+}
+
+
+export default function CustomPlayer({audioRef}:customPlayer) {
+  const MUSIC_PATH_TEMP = "C:\\Users\\Admin\\Desktop\\MP-II\\MP-II\\dist-electron\\data\\Test\\a french girl singing je te laisserai des mots while it's raining ：').mp3"
+  
+    //This only exists because of difficulty in manual refactor, toomany similar words to run a simple refactor
+    const audioElem = audioRef
 
   //Important variables needed to be kept in useState
   const [isPlaying, setPlaying] = useState(false);
@@ -20,9 +28,10 @@ export default function CustomPlayer() {
   //Updating the currentTime to be consumed while rendering the seekbar
   useEffect(() => {
 
-
+    //initialising the audio element with the constraints provided
     if(audioElem.current){
       audioElem.current.volume = volume;
+      audioElem.current.src = MUSIC_PATH_TEMP
     }
 
     function updateTime(){
@@ -85,7 +94,8 @@ export default function CustomPlayer() {
   function convertToHumanReadable(time:number){
     const minutes = Math.floor(time /60)
     const seconds = Math.floor(time % 60)
-    return `${minutes}:${seconds}`
+    //altering the string to add padded 00s if the value of minutes or seconds is less than 10
+    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
   }
 
   //=====To=be=implemented==========

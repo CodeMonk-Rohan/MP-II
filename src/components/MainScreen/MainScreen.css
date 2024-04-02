@@ -1,0 +1,15 @@
+.main-area {
+    display: flex;
+    height: 100vh;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    
+    
+}
+
+.test{
+    background-color: rgb(98, 212, 124);
+    height: 40px;
+    width: 40px;
+}

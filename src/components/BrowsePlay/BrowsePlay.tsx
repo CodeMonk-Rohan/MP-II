@@ -1,10 +1,11 @@
 import "./BrowsePlay.css"
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
 import plus from "../../assets/plus-button.svg"
 
 type data = {
   data: playlist[]
+
 }
 
 export type playlist = {
@@ -15,8 +16,38 @@ export type playlist = {
 
 export default function BrowsePlay({data}:data) {
   const ref = useRef(null);
+  const [formData, setFormData] = useState({
+    name:"",
+    url:""
+  });
+
+  const handleInputChange = (event : React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]:value
+    });
+    console.log(formData)
+  };
+
+
+
   const { scrollXProgress } = useScroll({ container: ref });
   console.log(data)
+
+  async function downloadPlaylist(PlaylistName: string, URL: string) {
+    try {
+      await window.ipcRenderer.invoke("downloadPlaylist", PlaylistName, URL);
+      // setClicked(!clicked);
+    } catch (err) {
+      console.log("--------------------Between--------Dwnld-----------------------");
+      
+      console.log(err);
+    }
+  }
+
+
+
   return (
     <>
       <motion.ul className="add-ul" initial={{ opacity: 0, scale: 0.5 }}
@@ -30,8 +61,8 @@ export default function BrowsePlay({data}:data) {
               transition={{ type: "spring", stiffness: 400, damping: 10 }}>
                   <button className="add-butt"><img className="add-button"src={plus}></img></button>
                   <div className="add-data">
-                  <input className="txt-box" type="text" placeholder="Enter Name"></input>
-                  <input className="txt-box" type="text" placeholder="Enter URL"></input>
+                  <input className="txt-box" type="text" placeholder="Enter Name" value={formData.name} onChange={handleInputChange} name="name"></input>
+                  <input className="txt-box" type="text" placeholder="Enter URL" value={formData.url} onChange={handleInputChange} name="url"></input>
                   </div>
               </motion.li>
 
@@ -44,9 +75,7 @@ export default function BrowsePlay({data}:data) {
               ))}
 
               
-              <motion.li whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}></motion.li>
-              <motion.li whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}></motion.li>
-              <motion.li whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}></motion.li>
+              
       </motion.ul>
       
     </>

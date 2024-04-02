@@ -14,7 +14,7 @@ export default function Queue({data}:data){
                 <div>
                        Queue Here
                        {data.map((song, index)=>(
-                        <div>{song.name}</div>
+                        <div key={index}>{song.name}</div>
                        ))}
                 </div>
             </div>
