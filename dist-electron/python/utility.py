@@ -108,12 +108,12 @@ def writeMusicPaths(directory, existing_music, target_file):
 #test code
 # data = getMP3paths("C:\\Users\\Admin\\Desktop\\Music\\Database\\結構")
 # print(data)
-# dummy_url = "https://youtube.com/playlist?list=PLAtpKAUoxXic6XroxqWVp65Ie9aJCbILl&si=fzHsg8hQXQe_EqCS"
-# download(dummy_url, "Test", "C:/Users/Admin/Desktop/MP-II/alpha-1.4/dist-electron/data")
+dummy_url = "https://youtube.com/playlist?list=PLAtpKAUoxXifewNw-KcqH_lafYGC343sc&si=Pn0zb6oIBb99MdN7"
+download(dummy_url, "My_Playlist", "C:/Users/Admin/Desktop/MP-II/alpha-1.4/dist-electron/data")
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    url = sys.argv[1]
-    name = sys.argv[2]
-    OUTPUT_DIR = sys.argv[3]
-    download(url, name, OUTPUT_DIR)
+#     url = sys.argv[1]
+#     name = sys.argv[2]
+#     OUTPUT_DIR = sys.argv[3]
+#     download(url, name, OUTPUT_DIR)

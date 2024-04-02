@@ -6,7 +6,7 @@ const path = require("path");
 const { spawn } = require("child_process");
 const dataFolderPath = path.join(__dirname, "data");
 const userFile = path.join(__dirname, "userData.txt");
-const pythonDir = path.join(__dirname, "python/utility.py");
+const pythonDir = path.join(__dirname, "python/utility2.py");
 function setUpShortcut(keyCombination, win2) {
   electron.globalShortcut.register(keyCombination, () => {
     if (win2 == null ? void 0 : win2.isVisible()) {
@@ -72,28 +72,22 @@ function fetchSongs(playlist) {
 }
 async function downloadPlaylist(url, name) {
   const dataToAdd = "\n" + name + "|sep|" + url;
-  const dataFolder = dataFolderPath.replace(/\\/g, "/");
   const downloadScript = pythonDir.replace(/\\/g, "/");
   try {
     const data = fs.appendFileSync(userFile, dataToAdd);
     console.log("calling process...");
     const pythonProcess = spawn("python", [
       downloadScript,
-      url,
       name,
-      dataFolder
-    ]);
-    console.log(downloadScript);
-    pythonProcess.stdout.on("data", (data2) => {
-      let myData = data2;
-      console.log("this");
-      console.dir(myData.toString());
+      url
+    ], { stdio: ["inherit", "inherit", "inherit"] });
+    console.log("calling script: ", downloadScript);
+    pythonProcess.on("exit", (code, signal) => {
+      console.log(`Python process exited with code ${code} and signal ${signal}`);
     });
     pythonProcess.on("error", (err) => {
-      console.error("Error spawning Python process:", err);
-      console.dir(err);
+      console.error("Failed to start Python process:", err);
     });
-    return data;
   } catch (err) {
     console.log(err);
   }

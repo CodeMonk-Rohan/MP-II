@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./CustomPlayer.css";
 import {motion} from "framer-motion"
 import { FaPlay, FaPause } from 'react-icons/fa';
@@ -103,7 +103,7 @@ export default function CustomPlayer({audioRef}:customPlayer) {
   function handleNext() {}
   function handlePrev() {}
   
-
+  
 
   return (
     <motion.div className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
@@ -142,6 +142,7 @@ export default function CustomPlayer({audioRef}:customPlayer) {
                 <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
                   <img className="next-butt" src={next}></img>
                 </motion.button>
+                
         </div>
 
             <motion.div onPointerDownCapture={(e) => e.stopPropagation()} className="vol-div" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>

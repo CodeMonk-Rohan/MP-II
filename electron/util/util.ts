@@ -7,7 +7,7 @@ const { spawn } = require("child_process");
 //Setting up relative paths, so the app is independent of its position in the file tree
 const dataFolderPath = path.join(__dirname, "data");
 const userFile = path.join(__dirname, "userData.txt");
-const pythonDir = path.join(__dirname, "python/utility.py");
+const pythonDir = path.join(__dirname, "python/utility2.py"); //utility2 is the updated version of the script with better file writing
 
 //Logic to display and hide the overlay as needed, the shorcut key may be remapped to whatever, in the main.ts file
 export function setUpShortcut(
@@ -122,7 +122,7 @@ export async function downloadPlaylist(url: string, name: string) {
   const dataToAdd = "\n" + name + "|sep|" + url;
   // Just a simple regex to replace the backward slash paths with the forward slashes, as it can cause errors in python due to \s
   // like characters being interpreted as special characters instead of simple strings
-  const dataFolder = dataFolderPath.replace(/\\/g, "/");
+  // const dataFolder = dataFolderPath.replace(/\\/g, "/");
   const downloadScript = pythonDir.replace(/\\/g, "/");
 
   try {
@@ -133,23 +133,36 @@ export async function downloadPlaylist(url: string, name: string) {
 
     const pythonProcess = spawn("python", [
       downloadScript,
-      url,
       name,
-      dataFolder,
-    ]);
-    console.log(downloadScript);
-    pythonProcess.stdout.on("data", (data: any) => {
-      // Send data to renderer process
-      let myData: Uint8Array = data;
-      console.log("this");
-      console.dir(myData.toString());
+      url
+    ], {stdio: ['inherit', 'inherit', 'inherit']});
+
+    
+
+    // const pythonProcess = spawn("python", [downloadScript], {stdio: ['inherit', 'inherit', 'inherit']})
+
+    console.log("calling script: ", downloadScript);
+    // console.log("download folder: ", dataFolder)
+    // pythonProcess.stdout.on("data", (data: any) => {
+    //   // Send data to renderer process
+    //   let myData: Uint8Array = data;
+    //   console.log("this");
+    //   console.dir(myData.toString());
+    // });
+    // pythonProcess.on("error", (err: any) => {
+    //   console.error("Error spawning Python process:", err);
+    //   console.dir(err);
+    // });
+
+    pythonProcess.on('exit', (code:any, signal:any) => {
+      console.log(`Python process exited with code ${code} and signal ${signal}`);
     });
-    pythonProcess.on("error", (err: any) => {
-      console.error("Error spawning Python process:", err);
-      console.dir(err);
+    
+    pythonProcess.on('error', (err:any) => {
+      console.error('Failed to start Python process:', err);
     });
     //return?
-    return data;
+    // return data;
   } catch (err) {
     console.log(err);
   }

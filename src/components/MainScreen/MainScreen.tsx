@@ -25,11 +25,6 @@ function MainScreen({audioRef}:mainScreenProps) {
   const [active, setActive] = useState<string>("Browse")
   const [playlistData, setPlaylistData] = useState<playlist[]>([])
   const [currentPlaylist, setCurrentPlaylist] = useState<song[]>([])
-  
-
-  // reference to the audio element, so that the user can move between different screens,
-  // without worrying about the music stopping, due to the audio element being dismounted.
-
  
 
   //initialisation of the app, loading relevant data happens here for the first time
@@ -73,14 +68,6 @@ function MainScreen({audioRef}:mainScreenProps) {
         return <ScreenWrapper children={<Queue data={currentPlaylist}/>}/>
     }
   }
-
-  // // useEffect(()=>{
-    
-
-  // //   downloadPlaylist()
-  // // })
-  
-  
 
   
   
