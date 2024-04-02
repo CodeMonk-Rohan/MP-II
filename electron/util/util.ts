@@ -137,22 +137,8 @@ export async function downloadPlaylist(url: string, name: string) {
       url
     ], {stdio: ['inherit', 'inherit', 'inherit']});
 
-    
-
-    // const pythonProcess = spawn("python", [downloadScript], {stdio: ['inherit', 'inherit', 'inherit']})
 
     console.log("calling script: ", downloadScript);
-    // console.log("download folder: ", dataFolder)
-    // pythonProcess.stdout.on("data", (data: any) => {
-    //   // Send data to renderer process
-    //   let myData: Uint8Array = data;
-    //   console.log("this");
-    //   console.dir(myData.toString());
-    // });
-    // pythonProcess.on("error", (err: any) => {
-    //   console.error("Error spawning Python process:", err);
-    //   console.dir(err);
-    // });
 
     pythonProcess.on('exit', (code:any, signal:any) => {
       console.log(`Python process exited with code ${code} and signal ${signal}`);
