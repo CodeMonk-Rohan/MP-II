@@ -44,8 +44,8 @@ function fetchAllPlaylists() {
     const fileDataJSON = [];
     playlist.forEach((item) => {
       const MetaData = item.split("|sep|");
-      const url = MetaData[0];
-      const name = MetaData[1];
+      const url = MetaData[1];
+      const name = MetaData[0];
       fileDataJSON.push({ name, url });
     });
     return fileDataJSON;
@@ -55,7 +55,7 @@ function fetchAllPlaylists() {
 }
 function fetchSongs(playlist) {
   const playlistFolder = path.join(dataFolderPath, playlist);
-  const playlistDataFile = path.join(playlistFolder, `${playlist}.txt`);
+  const playlistDataFile = path.join(playlistFolder, `downloaded_files.txt`);
   try {
     const fileData = fs.readFileSync(playlistDataFile, "utf-8");
     const fileDataJSON = [];
