@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
 
 
-import SearchBar from "../SearchBar/SearchBar";
 import itemicon from "../../assets/home-button.svg"
 import plus from "../../assets/plus-button.svg";
 import { song } from "../../App";
@@ -29,9 +28,14 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     name: "",
     url: "",
   });
-
+  
   const [filteredPlaylist, setFilteredPlaylist] = useState(data)
+  
 
+  useEffect(()=>{
+    setFilteredPlaylist(data)
+    
+  }, [data])
   // TO DO:
   // This function is to be called when the python process sends a signal with a response code from the main process  
   async function fetchAllPlaylists() {

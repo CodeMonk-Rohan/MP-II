@@ -29,7 +29,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
   const [volume, setVolume] = useState(0.43);
 
   const [currentTrack, setCurrentTrack] = useState<song>({name:"No Music", path:"No path loaded"})
-
+  
   const [filteredSongs, setFilteredSongs] = useState(currentPlaylist)
 
 
@@ -137,6 +137,10 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
   function handlePrev() {
 
     const index = currentPlaylist.indexOf(currentTrack)
+    //Prevent illegal access outside of array
+    if (index -1 < 0){
+      return
+    }
     const length = currentPlaylist.length
 
     const nextIndex = (index - 1) % length
