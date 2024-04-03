@@ -15,12 +15,12 @@ def custom_hook(d, name):
     if d['status'] == 'finished':
         print('Finished Downloading, Commencing post processing.')
         file_path = d['filename']
-        print(f"Filepath: ${file_path}", flush=True)
+        # print(f"Filepath: ${file_path}", flush=True)
 
         with open(os.path.join(OUTPUT_DIR, name, "downloaded_files.txt"), 'a', encoding='utf-8') as f:
             f.write(file_path + '\n')
-            print(f"writing {file_path} to {name}/downloaded_files.txt")
-        print('Downloaded:', file_path)
+            # print(f"writing {file_path} to {name}/downloaded_files.txt")
+        # print('Downloaded:', file_path)
 
 
 def downloadPlaylist(name: str, url: str):

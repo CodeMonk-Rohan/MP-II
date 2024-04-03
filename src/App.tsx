@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "./App.css";
 
 import MainScreen from "./components/MainScreen/MainScreen";
@@ -21,7 +21,7 @@ function App() {
 
     <MainScreen audioRef={audioRef} ></MainScreen>
 
-    <audio ref={audioRef}></audio>
+    <audio ref={audioRef} autoPlay></audio>
   </div>
   
 }

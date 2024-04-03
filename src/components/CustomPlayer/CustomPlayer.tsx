@@ -17,29 +17,40 @@ type customPlayer = {
 
 export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
   
-  //This only exists because of difficulty in manual refactor, toomany similar words to run a simple refactor
+  //This only exists because of difficulty in manual refactor, too many similar words to run a simple refactor
   const audioElem = audioRef
   
   
+  
   //Important variables needed to be kept in useState
-  const [isPlaying, setPlaying] = useState(false);
+  const [isPlaying, setPlaying] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.1);
+  const [volume, setVolume] = useState(0.43);
 
-  //Updating the currentTime to be consumed while rendering the seekbar
+  const [currentTrack, setCurrentTrack] = useState<song>({name:"No Music", path:"No path loaded"})
+
+  const [filteredSongs, setFilteredSongs] = useState(currentPlaylist)
+
+
+  // Updating the currentTime to be consumed while rendering the seekbar
+  // All first time initialisation steps performed here
   useEffect(() => {
-
+    setCurrentTrack(currentPlaylist[0])
+    // console.log(currentTrack.path)
     //initialising the audio element with the constraints provided
     if(audioElem.current){
       audioElem.current.volume = volume;
-      audioElem.current.src = currentPlaylist[0].path
+      
+      audioElem.current.src = currentTrack.path == "No path loaded" ? currentPlaylist[0].path : currentTrack.path
+      
     }
 
     function updateTime(){
       if(audioElem.current){
         setCurrentTime(audioElem.current.currentTime)
       }
+
     }
 
     function updateDuration(){
@@ -57,17 +68,24 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
     audioElem.current?.addEventListener('timeupdate', updateTime);
     audioElem.current?.addEventListener('loadedmetadata', updateDuration);
     audioElem.current?.addEventListener('volumechange', updateVolume);
+    audioElem.current?.addEventListener('ended', handleNext);
 
     return () => {
       audioElem.current?.removeEventListener('timeupdate', updateTime);
       audioElem.current?.removeEventListener('loadedmetadata', updateDuration);
       audioElem.current?.removeEventListener('volumechange', updateVolume);
+      audioElem.current?.removeEventListener('ended', handleNext);
     };
 
   }, []);
 
   //===========Working===============
   function handleMusicToggle() {
+    if (audioElem.current){
+      console.log(audioElem.current.src)
+      
+    }
+
     if (isPlaying) {
       audioElem.current?.pause();
     } else {
@@ -100,10 +118,55 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
     return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
   }
 
+  function handleNext() {
+    console.log("NEXT FUNCTION CALLED");
+    
+    const index = currentPlaylist.indexOf(currentTrack)
+    const length = currentPlaylist.length
+
+    const nextIndex = (index + 1) % length
+    console.log(nextIndex,"<-----", index, currentPlaylist)
+    setCurrentTrack(currentPlaylist[nextIndex])
+    if(audioElem.current){
+      audioElem.current.src = currentPlaylist[nextIndex].path
+      
+    } 
+    // console.log(nextIndex, "Next: ", currentPlaylist[nextIndex])
+  }
+
+  function handlePrev() {
+
+    const index = currentPlaylist.indexOf(currentTrack)
+    const length = currentPlaylist.length
+
+    const nextIndex = (index - 1) % length
+    setCurrentTrack(currentPlaylist[nextIndex])
+    if(audioElem.current){
+      audioElem.current.src = currentPlaylist[nextIndex].path
+      
+    }
+    console.log(nextIndex)
+  }
+
+
+  function filterSongs(query:string){
+    const filtered = currentPlaylist.filter((song)=>
+      song.name.toLowerCase().includes(query.toLowerCase())
+    )
+    setFilteredSongs(filtered)
+  }
+
+  function handleSearchInput(event: React.ChangeEvent<HTMLInputElement>){
+    const query = event.target.value.toLowerCase()
+
+    filterSongs(query)
+
+  }
+
   //=====To=be=implemented==========
   function handleRepeat() {}
-  function handleNext() {}
-  function handlePrev() {}
+
+
   
   
 
@@ -116,75 +179,76 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
       delay: 0,
       ease: [0, 0.71, 0.2, 1.01]
     }}>
-          
+          {/* PLAYER */}
         <div>
-        <p onPointerDownCapture={(e) => e.stopPropagation()}>{currentPlaylist[0]?.name}</p>
-        {/* <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio> */}
-      
-        <motion.div>
-          <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
-        </motion.div>
+          <p onPointerDownCapture={(e) => e.stopPropagation()}>{currentTrack.name.slice(0, -5)}</p>
+          
+        
+          <motion.div>
+            <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
+          </motion.div>
 
-        <div className="timestamp">
-          <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
-          <div className="duration-time"> {convertToHumanReadable(duration)}</div>
-        </div>
+          <div className="timestamp">
+            <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
+            <div className="duration-time"> {convertToHumanReadable(duration)}</div>
+          </div>
 
-        <div className="control">
-                <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
-                  <img className="prev-butt" src={prev}></img>
-                </motion.button>
-
-                <div onPointerDownCapture={(e) => e.stopPropagation()} className="playpause-button"onClick={handleMusicToggle} style={{ cursor: 'pointer' }}>
-                  <motion.div 
-                    initial={false}
-                    animate={{ scale: isPlaying ? 0.9 : 1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
-
-                  </motion.div>
-                </div>
-
+          <div className="control">
                   <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
-                    <img className="next-butt" src={next}></img>
+                    <img className="prev-butt" src={prev} onClick={handlePrev}></img>
                   </motion.button>
 
-                    {/* <div className="timestamp">
-                      <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
-                      <div className="duration-time"> {convertToHumanReadable(duration)}</div>
-                    </div> */}
+                  <div onPointerDownCapture={(e) => e.stopPropagation()} className="playpause-button"onClick={handleMusicToggle} style={{ cursor: 'pointer' }}>
+                    <motion.div 
+                      initial={false}
+                      animate={{ scale: isPlaying ? 0.9 : 1 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
 
-                  
+                    </motion.div>
+                  </div>
+
+                    <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                      <img className="next-butt" src={next} onClick={handleNext}></img>
+                    </motion.button>
+
+                      
 
                     
-                
-        </div>
-        <motion.div onPointerDownCapture={(e) => e.stopPropagation()} className="vol-div" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.8 }}>
-                    <input type="range" min={0.0} max={1.0} step="0.01" value={volume} onChange={handleVolume} className="vol-bar"></input>
-                    </motion.div>
+
+                      
+                  
+          </div>
+
+          <motion.div onPointerDownCapture={(e) => e.stopPropagation()} className="vol-div" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.8 }}>
+                      <input type="range" min={0.0} max={1.0} step="0.01" value={volume} onChange={handleVolume} className="vol-bar"></input>
+          </motion.div>
+
         </div>
               
-              <motion.div className="queue-card" whileHover={{ scale: 1.04 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                  
-                  <div className="q-card-search">
-                    <input className="q-searchbox" type="text" placeholder="Search" onPointerDownCapture={(e) => e.stopPropagation()}></input>
-                    <button className='q-search-icon'><FiSearch /></button>
-                  </div>
+        {/* QUEUE */}
+        <motion.div className="queue-card" whileHover={{ scale: 1.04 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+            
+            <div className="q-card-search">
+              <input className="q-searchbox" type="text" onChange={handleSearchInput} placeholder="Search" onPointerDownCapture={(e) => e.stopPropagation()}></input>
+              <button className='q-search-icon'><FiSearch /></button>
+            </div>
 
-                  <div className="main-queue-list">
-                    <ol className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
-                                      <button className="q-item-names"><li >Hello world how we doing </li></button>
-                                      <button className="q-item-names"><li >Hello </li></button>
-                                      <button className="q-item-names"><li >Hello </li></button>
-                                      <button className="q-item-names"><li >Hello </li></button>
-                                      <button className="q-item-names"><li >Hello </li></button>
-                                   
-                    </ol>
-                  </div>
+            <div className="main-queue-list">
+              <ol className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
+                                
+                                {filteredSongs.map((song, index)=>(
+                                  <button key={index} className="q-item-names"><li > {song.name.slice(0, -5)} </li></button>
 
-              </motion.div>
+                                ))}
+
+                              
+              </ol>
+            </div>
+
+        </motion.div>
 
     </motion.div>
 

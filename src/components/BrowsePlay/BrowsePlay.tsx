@@ -1,4 +1,5 @@
 import "./BrowsePlay.css";
+import '../SearchBar/SearchBar.css'
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
 
@@ -7,6 +8,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import itemicon from "../../assets/home-button.svg"
 import plus from "../../assets/plus-button.svg";
 import { song } from "../../App";
+import { FiSearch } from "react-icons/fi";
 
 
 type data = {
@@ -28,7 +30,10 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     url: "",
   });
 
- 
+  const [filteredPlaylist, setFilteredPlaylist] = useState(data)
+
+  // TO DO:
+  // This function is to be called when the python process sends a signal with a response code from the main process  
   async function fetchAllPlaylists() {
     const data = await window.ipcRenderer.invoke("fetchAllPlaylists") 
     //Read userdata file and load every playlist written into it.   
@@ -56,6 +61,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   // console.log(data)
 
   async function downloadPlaylist(URL: string, PlaylistName: string) {
+    setFormData({name:"", url:""})
     try {
       const data = await window.ipcRenderer.invoke(
         "downloadPlaylist",
@@ -84,6 +90,19 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     changeScreen("Player")
   }
 
+  function filterPlaylist(query:string){
+    const filtered = data.filter((playlist)=>
+      playlist.name.toLowerCase().includes(query)
+    )
+    setFilteredPlaylist(filtered)
+  }
+
+  function handleSearchInput(event: React.ChangeEvent<HTMLInputElement>){
+    const query = event.target.value.toLowerCase()
+    filterPlaylist(query)
+
+  }
+
   return (
     <>
 
@@ -93,7 +112,13 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
               duration: 0.8,
               delay: 0,
               ease: [0, 0.71, 0.2, 1.01]}}ref={ref}>
-        <SearchBar/>
+
+          {/* Search Bar */}
+          <div>
+            <input type="text" placeholder="Search" onChange={handleSearchInput} onPointerDownCapture={(e) => e.stopPropagation()}></input>
+            <FiSearch className='search-icon'/>
+          </div>
+
         </motion.div>
         
         <motion.ul className="add-ul" initial={{ opacity: 0, scale: 0.5 }}
@@ -114,7 +139,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                     </div>
                 </motion.li>
 
-                {data.map((item, index)=>(
+                {filteredPlaylist.map((item, index)=>(
                     <motion.li className="item-cards" key={index} whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}> 
                       <div className="item-div">
                           <div >

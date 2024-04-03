@@ -144,7 +144,11 @@ export async function downloadPlaylist(url: string, name: string) {
       downloadScript,
       name,
       url
-    ], {stdio: ['inherit', 'inherit', 'inherit']});
+    ], 
+    {
+      stdio: ['inherit', 'inherit', 'inherit'],
+      encoding:'utf-8'
+    });
 
 
     console.log("calling script: ", downloadScript);

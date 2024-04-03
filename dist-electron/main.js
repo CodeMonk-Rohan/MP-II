@@ -80,11 +80,18 @@ async function downloadPlaylist(url, name) {
   try {
     const data = await fs.appendFileSync(userFile, dataToAdd);
     console.log("calling process...");
-    const pythonProcess = spawn("python", [
-      downloadScript,
-      name,
-      url
-    ], { stdio: ["inherit", "inherit", "inherit"] });
+    const pythonProcess = spawn(
+      "python",
+      [
+        downloadScript,
+        name,
+        url
+      ],
+      {
+        stdio: ["inherit", "inherit", "inherit"],
+        encoding: "utf-8"
+      }
+    );
     console.log("calling script: ", downloadScript);
     pythonProcess.on("exit", (code, signal) => {
       console.log(`Python process exited with code ${code} and signal ${signal}`);

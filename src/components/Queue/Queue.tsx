@@ -1,15 +1,13 @@
 export default function Queue(){
     return(
 
-        
+
 
         <div>
             <div>
                 <div>
-                       Queue Here
-                       {data?.map((song, index)=>(
-                        <div key={index}>{song.name}</div>
-                       ))}
+                       Queue Here To be deleted
+                       
                 </div>
             </div>
         </div>
