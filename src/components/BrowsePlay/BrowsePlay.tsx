@@ -118,7 +118,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                     <motion.li className="item-cards" key={index} whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}> 
                       <div className="item-div">
                           <div >
-                            <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)} ></img>
+                            <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)}} ></img>
                           </div>
                             {item.name}
                       </div>
