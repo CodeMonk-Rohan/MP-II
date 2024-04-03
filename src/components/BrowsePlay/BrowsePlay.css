@@ -21,12 +21,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-ul {
+.add-ul {
   display: flex;
   flex-direction: row;
   list-style: none;
-  height: 14vh;
-  width: 25vw;
+  height: 13.6vh;
+  width: 22vw;
   padding: 20px 0;
   margin: 0 ;
   overflow-x: scroll;
@@ -54,7 +54,7 @@ ul {
   background: #fff3;
 }
 
-li {
+.add-li,.item-cards {
   flex: 0 0 120px;
   background: var(--accent);
   margin: 0 30px 0 0;
@@ -115,7 +115,7 @@ li:last-of-type {
   font-size: 12px;
   font-family: Arial;
   width: 60%;
-  margin-left: 16.5%;
+  margin-left: 18%;
   background-color: rgba(0, 78, 247, 0.137);
   transition: box-shadow 0.35s;
  
@@ -128,4 +128,45 @@ li:last-of-type {
 .txt-box:focus-within{
   box-shadow: 0 0 2px rgba(47, 0, 255, 0.767);
   
+}
+
+.item-cards{
+  color: black;
+
+}
+
+.item-div{
+  /* border: 1px solid; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15%;
+}
+
+.item-icon{
+  border: 1px solid;
+  border-radius: 100px;
+  height: 50px;
+  margin-bottom: 17%;
+}
+
+.box{
+  display: flex;
+  cursor: pointer;
+  background: #fafafa;
+  padding: 5px 20px;
+  border-radius: 30px;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+.box:hover input{
+  width: 300px;
+}
+.box input{
+  width: 0;
+  outline: none;
+  border: none;
+  font-weight: 500;
+  transition: 0.8s;
+  background: transparent;
 }
