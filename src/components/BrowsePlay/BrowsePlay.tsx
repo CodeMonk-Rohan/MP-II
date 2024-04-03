@@ -1,13 +1,8 @@
 import "./BrowsePlay.css";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
-
-
-import SearchBar from "../SearchBar/SearchBar";
-import itemicon from "../../assets/home-button.svg"
 import plus from "../../assets/plus-button.svg";
 import { song } from "../../App";
-
 
 type data = {
   data: playlist[];
@@ -86,53 +81,62 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
 
   return (
     <>
-
-        <motion.div className="box" initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0,
-              ease: [0, 0.71, 0.2, 1.01]}}ref={ref}>
-        <SearchBar/>
-        </motion.div>
-        
-        <motion.ul className="add-ul" initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0,
-              ease: [0, 0.71, 0.2, 1.01]}}
-              ref={ref}>
-                
-                <motion.li className="add-li" onPointerDownCapture={(e) => e.stopPropagation()}
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                    <button className="add-butt" onClick={()=>{downloadPlaylist(formData.name, formData.url)}}><img className="add-button"src={plus}></img></button>
-                    <div className="add-data">
-                    <input className="txt-box" type="text" placeholder="Name" value={formData.name} onChange={handleInputChange} name="name"></input>
-                    <input className="txt-box" type="text" placeholder="URL" value={formData.url} onChange={handleInputChange} name="url"></input>
-                    </div>
-                </motion.li>
-
-                {data.map((item, index)=>(
-                    <motion.li className="item-cards" key={index} whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}> 
-                      <div className="item-div">
-                          <div >
-                            <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)} ></img>
-                          </div>
-                            {item.name}
-                      </div>
-            
-
-                    </motion.li>
-
-                ))}
-
-                
-                
-        </motion.ul>
-        
-
+      <motion.ul
+        className="add-ul"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.8,
+          delay: 0,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
+        ref={ref}
+      >
+        <motion.li
+          className="add-li"
+          onPointerDownCapture={(e) => e.stopPropagation()}
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          <button
+            className="add-butt"
+            onClick={() => {
+              downloadPlaylist(formData.name, formData.url);
+            }}
+          >
+            <img className="add-button" src={plus}></img>
+          </button>
+          <div className="add-data">
+            <input
+              className="txt-box"
+              type="text"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleInputChange}
+              name="name"
+            ></input>
+            <input
+              className="txt-box"
+              type="text"
+              placeholder="Url"
+              value={formData.url}
+              onChange={handleInputChange}
+              name="url"
+            ></input>
+          </div>
+        </motion.li>
+        <button onClick={fetchAllPlaylists}>Refresh</button>
+        {data.map((item, index) => (
+          <motion.li
+            key={index}
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            onClick={()=>{setPlaylist(item.name)}}
+          >
+            {item.name}
+          </motion.li>
+        ))}
+      </motion.ul>
     </>
   );
 }

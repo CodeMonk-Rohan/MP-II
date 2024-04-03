@@ -68,8 +68,7 @@ function MainScreen({audioRef}:mainScreenProps) {
         return <ScreenWrapper children={<CustomPlayer audioRef={audioRef} currentPlaylist={currentPlaylist}/>}/>
 
        case 'Queue':
-        return <ScreenWrapper children={<Queue/>}/> 
-        // i have removed (data={currentPlaylist}) from above line
+        return <ScreenWrapper children={<Queue data={currentPlaylist}/>}/>
     }
   }
 
