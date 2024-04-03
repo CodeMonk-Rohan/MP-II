@@ -1,14 +1,8 @@
-import "./Queue.css"
-
-type data = {
-    data: {
-        name:string,
-        path:string
-    }[]
-}
-
-export default function Queue({data}:data){
+export default function Queue(){
     return(
+
+        
+
         <div>
             <div>
                 <div>

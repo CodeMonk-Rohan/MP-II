@@ -1,0 +1,10 @@
+.search-icon{
+    border: none;
+    background: none;
+    color: rgb(55, 16, 228);
+    padding-right: 3px;
+    
+}
+.search-icon:active{
+    opacity: 0.4;
+}
