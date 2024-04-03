@@ -11,16 +11,11 @@ OUTPUT_DIR = os.path.join(os.getcwd(), "dist-electron", "data")
 
 
 def custom_hook(d, name):
-    if d['status']=='finished':
+    # This hook is called for each video within the playlist.
+    if d['status'] == 'finished':
         print('Finished Downloading, Commencing post processing.')
         file_path = d['filename']
-        print(f"Filepath: ${file_path}", flush=True )
-        
-        
-        # if(not os.path.exists(f'{name}/downloaded_files.txt')):
-        #     with open(f'{name}/downloaded_files.txt', 'w') as file:
-        #         pass
-            
+        print(f"Filepath: ${file_path}", flush=True)
 
         with open(os.path.join(OUTPUT_DIR, name, "downloaded_files.txt"), 'a', encoding='utf-8') as f:
             f.write(file_path + '\n')
@@ -28,21 +23,23 @@ def custom_hook(d, name):
         print('Downloaded:', file_path)
 
 
-def downloadPlaylist(name:str, url:str):
+def downloadPlaylist(name: str, url: str):
+    # configuration for the download
     ydl_opts = {
-        'format':'m4a/bestaudio/best',
-        'postprocessors' : [
+        'format': 'm4a/bestaudio/best',
+        # combining the small little files sent over by youtube into a playable music file, via ffmpeg
+        'postprocessors': [
             {
                 'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3', #used to be m4a for reference
+                'preferredcodec': 'm4a',  # used to be m4a for reference
             }
         ],
-        
         'logger': customLogger.customLogger(),
 
-        'progress_hooks':[lambda d, name=name: custom_hook(d, name)],
+        # progress hooks only take a function, and I needed to inject playlist name into it, hence the lambda function
+        'progress_hooks': [lambda d, name=name: custom_hook(d, name)],
 
-        'outtmpl':f'{OUTPUT_DIR}\\{name}\\%(title)s.%(ext)s',
+        'outtmpl': f'{OUTPUT_DIR}\\{name}\\%(title)s.%(ext)s',
 
         'download_archive': f'{OUTPUT_DIR}\\{name}\\{name}_keys.txt'
 
@@ -50,18 +47,14 @@ def downloadPlaylist(name:str, url:str):
 
     with YoutubeDL(ydl_opts) as ydl:
         output = ydl.extract_info(url, download=True)
-        
+
         pprint.pprint(output["playlist_count"])
         pprint.pprint(output["title"])
 
 
-
-        
 if __name__ == "__main__":
-    
     name = sys.argv[1]
     url = sys.argv[2]
-
     try:
         os.mkdir(os.path.join(OUTPUT_DIR, name))
         with open(os.path.join(OUTPUT_DIR, name, "downloaded_files.txt"), 'w', encoding='utf-8') as file:
@@ -70,13 +63,7 @@ if __name__ == "__main__":
     except FileExistsError:
         print("File already exists")
 
-    
-    
     print(f"Name: {name} \n URL: {url}\n")
-
-    downloadPlaylist( name, url) #we're passing the name first, here, because that's how the frontend calls it
-
-    print("------------------")
-    print(OUTPUT_DIR)
-
-
+    downloadPlaylist(name, url)
+    # print("------------------")
+    # print(OUTPUT_DIR)

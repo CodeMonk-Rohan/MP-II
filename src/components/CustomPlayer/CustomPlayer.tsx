@@ -14,12 +14,13 @@ type customPlayer = {
 }
 
 
-export default function CustomPlayer({audioRef}:customPlayer) {
-  const MUSIC_PATH_TEMP = "C:\\Users\\Rohan\\Downloads\\Future, Metro Boomin - Like That (Official Audio).mp3"
-  
-    //This only exists because of difficulty in manual refactor, toomany similar words to run a simple refactor
-    const audioElem = audioRef
 
+export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
+  
+  //This only exists because of difficulty in manual refactor, toomany similar words to run a simple refactor
+  const audioElem = audioRef
+  
+  
   //Important variables needed to be kept in useState
   const [isPlaying, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -32,7 +33,7 @@ export default function CustomPlayer({audioRef}:customPlayer) {
     //initialising the audio element with the constraints provided
     if(audioElem.current){
       audioElem.current.volume = volume;
-      audioElem.current.src = MUSIC_PATH_TEMP
+      audioElem.current.src = currentPlaylist[0].path
     }
 
     function updateTime(){
@@ -107,22 +108,39 @@ export default function CustomPlayer({audioRef}:customPlayer) {
   
 
   return (
-      <> 
-            
-            <motion.div className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: 0.8,
-                delay: 0,
-                ease: [0, 0.71, 0.2, 1.01]
-              }}>
-                <div className="player-card">
 
-                  <p className="song-name">Audio Name Here</p>
-                  <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio>
-                
-                  <motion.div>
-                  <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
+    <motion.div className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{
+      duration: 0.8,
+      delay: 0,
+      ease: [0, 0.71, 0.2, 1.01]
+    }}>
+          
+        <p onPointerDownCapture={(e) => e.stopPropagation()}>{currentPlaylist[0]?.name}</p>
+        {/* <audio ref={audioElem} src={MUSIC_PATH_TEMP}></audio> */}
+      
+        <motion.div>
+        <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
+        </motion.div>
+
+        <div className="timestamp">
+        <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
+        <div className="duration-time"> {convertToHumanReadable(duration)}</div>
+        </div>
+
+        <div className="control">
+                <motion.button className="prev-next-buttons" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                  <img className="prev-butt" src={prev}></img>
+                </motion.button>
+                <div onPointerDownCapture={(e) => e.stopPropagation()} className="playpause-button"onClick={handleMusicToggle} style={{ cursor: 'pointer' }}>
+                  <motion.div 
+                    initial={false}
+                    animate={{ scale: isPlaying ? 0.9 : 1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
+
                   </motion.div>
 
                   <div className="timestamp">

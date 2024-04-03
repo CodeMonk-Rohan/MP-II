@@ -1,7 +1,17 @@
 export default function Queue(){
     return(
-        <ol  onPointerDownCapture={(e) => e.stopPropagation()}>
-            <li className="q-item-names">Hello </li>  
-        </ol>
+
+        
+
+        <div>
+            <div>
+                <div>
+                       Queue Here
+                       {data?.map((song, index)=>(
+                        <div key={index}>{song.name}</div>
+                       ))}
+                </div>
+            </div>
+        </div>
     );
 }
