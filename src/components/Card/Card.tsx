@@ -30,7 +30,7 @@ export default function Card({ children }: childrenProp) {
 
 
   return (
-    <motion.div
+    <motion.div className="main-area"
       drag
       dragConstraints={
         draggingSettings

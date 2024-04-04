@@ -2,8 +2,7 @@ import "./BrowsePlay.css";
 import '../SearchBar/SearchBar.css'
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
-
-
+import refresh from "../../assets/refresh-button.svg"
 import itemicon from "../../assets/home-button.svg"
 import plus from "../../assets/plus-button.svg";
 import { song } from "../../App";
@@ -109,8 +108,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
 
   return (
     <>
-
-        <motion.div className="box" initial={{ opacity: 0, scale: 0.5 }}
+     <motion.div className="box" initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
               duration: 0.8,
@@ -124,6 +122,8 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
           </div>
 
         </motion.div>
+    <div className="main-div">
+       
         
         <motion.ul className="add-ul" initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -150,6 +150,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                             <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)}} ></img>
                           </div>
                             {item.name}
+                            <img className="refresh-icon" src={refresh}></img>
                       </div>
             
 
@@ -161,7 +162,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                 
         </motion.ul>
         
-
+      </div>             
     </>
   );
 }
