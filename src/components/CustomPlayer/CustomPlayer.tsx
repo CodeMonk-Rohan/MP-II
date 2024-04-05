@@ -5,7 +5,6 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 import next from "../../assets/next-button.svg"
 import prev from "../../assets/prev-button.svg"
 import { song } from "../../App";
-import { FiSearch } from 'react-icons/fi';
 import qicon from "../../assets/home-button.svg"
 
 
@@ -44,7 +43,6 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
       audioElem.current.volume = volume;
       
       audioElem.current.src = currentTrack.path == "No path loaded" ? currentPlaylist[0].path : currentTrack.path
-      
     }
 
     function updateTime(){
@@ -66,6 +64,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
       }
     }
 
+    //Adding relevant listeners to the object
     audioElem.current?.addEventListener('timeupdate', updateTime);
     audioElem.current?.addEventListener('loadedmetadata', updateDuration);
     audioElem.current?.addEventListener('volumechange', updateVolume);
@@ -219,10 +218,6 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
                     </motion.button>
 
                       
-
-                    
-
-                      
                   
           </div>
 
@@ -236,17 +231,17 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
         <motion.div className="queue-card">
             
             <div className="q-card-search">
-              <input className="q-searchbox" type="text" onChange={handleSearchInput} placeholder="Playlist- Playlist Name Here?" onPointerDownCapture={(e) => e.stopPropagation()}></input>
+              <input className="q-searchbox" type="text" onChange={handleSearchInput} placeholder={`Search Playlist`} onPointerDownCapture={(e) => e.stopPropagation()}></input>
               {/* <button className='q-search-icon'><FiSearch /></button> */}
             </div>
 
             <div className="main-queue-list">
               <div className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
-                                {filteredSongs.map((song, index)=>(
-                                  <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div > {song.name.slice(0, -5)} </div></button>
 
-                                ))}
+                    {filteredSongs.map((song, index)=>(
+                      <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div> {song.name.slice(0, -5)} </div></button>
 
+                    ))}
                               
               </div>
             </div>

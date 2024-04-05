@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 import "./App.css";
 
 import MainScreen from "./components/MainScreen/MainScreen";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export type song = {
   name:string,
@@ -12,6 +13,8 @@ export type song = {
 function App() {
 
 
+
+ 
   const audioRef = useRef<HTMLAudioElement>(null)
   useEffect(()=>{
     console.log(audioRef.current);
@@ -22,6 +25,7 @@ function App() {
     <MainScreen audioRef={audioRef} ></MainScreen>
 
     <audio ref={audioRef} autoPlay></audio>
+    <ToastContainer position="bottom-center"/>
   </div>
   
 }

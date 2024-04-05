@@ -3,11 +3,16 @@ import { globalShortcut } from "electron";
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
+const record = require("node-record-lpcm16")
 
 //Setting up relative paths, so the app is independent of its position in the file tree
 const dataFolderPath = path.join(__dirname, "data");
 const userFile = path.join(__dirname, "userData.txt");
 const pythonDir = path.join(__dirname, "python/utility2.py"); //utility2 is the updated version of the script with better file writing
+
+
+
+
 
 //Logic to display and hide the overlay as needed, the shorcut key may be remapped to whatever, in the main.ts file
 export function setUpShortcut(
@@ -116,13 +121,15 @@ export function fetchSongs(playlist: string) {
   }
 }
 
-export async function downloadPlaylist(url: string, name: string) {
-
+export async function downloadPlaylist(url: string, name: string, win: BrowserWindow | null) {
+  
   if (url.length == 0 || name.length==0){
     console.log("Empty fields, stopping creation of creation of subprocess");
-    
     return
   }
+
+
+  
 
 
 
@@ -155,10 +162,13 @@ export async function downloadPlaylist(url: string, name: string) {
 
     pythonProcess.on('exit', (code:any, signal:any) => {
       console.log(`Python process exited with code ${code} and signal ${signal}`);
+      win?.webContents.send("Downloaded")
     });
     
     pythonProcess.on('error', (err:any) => {
       console.error('Failed to start Python process:', err);
+      console.log(win, win?.webContents)
+      win?.webContents.send(`Failed`)
     });
     //return?
     return data;
@@ -166,3 +176,32 @@ export async function downloadPlaylist(url: string, name: string) {
     console.log(err);
   }
 }
+
+
+
+//audio stream variable
+let audioStream :any;
+const filePath = path.join(__dirname, 'recorded_audio.wav');
+const fileStream = fs.createWriteStream(filePath, { encoding: 'binary' });
+
+
+export function recordAudio(){
+
+  audioStream = record.record({
+    sampleRate:44100,
+    channels:1,
+    verbose:true,
+  }).stream()
+
+  audioStream.pipe(fileStream);
+
+  console.log('Recording started. Audio will be saved to:', filePath);}
+
+export function stopRecording(){
+   if(audioStream){
+    audioStream.unpipe(fileStream); //stop writing to the file
+    fileStream.end() //end of file stream
+    console.log("File saved to : ", filePath)
+   }
+}
+

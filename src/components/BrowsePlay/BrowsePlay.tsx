@@ -9,6 +9,9 @@ import { song } from "../../App";
 import { FiSearch } from "react-icons/fi";
 
 
+import { toast } from "react-toastify";
+
+
 type data = {
   data: playlist[];
   changeScreen: React.Dispatch<React.SetStateAction<string>>;
@@ -29,10 +32,42 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   });
   
   const [filteredPlaylist, setFilteredPlaylist] = useState(data)
-  
+  const [downloading, setDownloading] = useState(false)
+
+  //variable to prevent multiple toasts from being generated (main process sends a lot of signals, can't do anything about that)
+  const [recievedSignal, setRecieved] = useState(false)
+  useEffect(()=>{
+
+    let count = 0
+    function handleDownloaded(event:Electron.Event, arg:any){
+      if(recievedSignal == false){
+        
+      
+
+        console.log("Downloaded signal received:", event);
+        setRecieved(true)
+        console.log(`Recieved: ${recievedSignal}`);
+        count = count + 1
+        console.log(count);
+        
+        setDownloading(false);
+        // toast("Playlist Updated");
+      
+        fetchAllPlaylists();
+      }
+    }
+
+    window.ipcRenderer.on("Downloaded", handleDownloaded)
+  })
+
 
   useEffect(()=>{
+    //search functionality
     setFilteredPlaylist(data)
+
+
+    //handle the signal sent by the main process when the download finishes
+    
     
   }, [data])
   // TO DO:
@@ -42,8 +77,6 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     //Read userdata file and load every playlist written into it.   
     await setPlaylistData(data)
     console.log("Playlists: ",data);
-    
-    
 
   }
 
@@ -64,7 +97,24 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   // console.log(data)
 
   async function downloadPlaylist(URL: string, PlaylistName: string) {
+    if(downloading == true){
+      toast.warn("Busy")
+      return
+    }
+
+    //add a form validation step here to save on accidental calls to youtube
+    //---TODO---
+
+    //Reset the name and url to be empty
     setFormData({name:"", url:""})
+
+    //disabled the download button, and notify the user that the download request is underway
+    setDownloading(true)
+
+    //set the recieved signal to be false (This variable exists to prevent multiple toasts from being generated needlessly)
+    setRecieved(false)
+    toast(`Pulling Changes for \n${PlaylistName}`)
+
     try {
       const data = await window.ipcRenderer.invoke(
         "downloadPlaylist",
@@ -79,6 +129,9 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
       console.log(err);
     }
   }
+
+
+
 
   async function fetchSongs(playlist:string) {
     const data = await window.ipcRenderer.invoke(fetchSongs.name, playlist)
@@ -119,6 +172,8 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
           <div>
             <input type="text" placeholder="Search" onChange={handleSearchInput} onPointerDownCapture={(e) => e.stopPropagation()}></input>
             <FiSearch className='search-icon'/>
+            {/* REFRESH BUTTON */}
+            <button onClick={fetchAllPlaylists}>Refresh</button>
           </div>
 
         </motion.div>

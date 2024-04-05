@@ -26,7 +26,8 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      webSecurity:false
+      webSecurity:false,
+      nodeIntegration:true,
     },
     frame:false,
     transparent:true, 
@@ -78,10 +79,13 @@ function startApp(){
   // Create/Verify the existence of the data folders
   createDataFolder()
 
-  setUpDirectoryManager()
+  
 
   //Create the actual window
   createWindow()
+
+  //functions requiring window must be called after creating the damn window (who would have thought?)
+  setUpDirectoryManager(win)
 
   //Opening dev tools
   win?.webContents.openDevTools({mode:"detach"})

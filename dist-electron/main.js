@@ -4,6 +4,7 @@ const path$1 = require("node:path");
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
+const record = require("node-record-lpcm16");
 const dataFolderPath = path.join(__dirname, "data");
 const userFile = path.join(__dirname, "userData.txt");
 const pythonDir = path.join(__dirname, "python/utility2.py");
@@ -70,7 +71,7 @@ function fetchSongs(playlist) {
     console.log(err);
   }
 }
-async function downloadPlaylist(url, name) {
+async function downloadPlaylist(url, name, win2) {
   if (url.length == 0 || name.length == 0) {
     console.log("Empty fields, stopping creation of creation of subprocess");
     return;
@@ -95,19 +96,44 @@ async function downloadPlaylist(url, name) {
     console.log("calling script: ", downloadScript);
     pythonProcess.on("exit", (code, signal) => {
       console.log(`Python process exited with code ${code} and signal ${signal}`);
+      win2 == null ? void 0 : win2.webContents.send("Downloaded");
     });
     pythonProcess.on("error", (err) => {
       console.error("Failed to start Python process:", err);
+      console.log(win2, win2 == null ? void 0 : win2.webContents);
+      win2 == null ? void 0 : win2.webContents.send(`Failed`);
     });
     return data;
   } catch (err) {
     console.log(err);
   }
 }
-function exposeToFrontEnd(functions) {
+let audioStream;
+const filePath = path.join(__dirname, "recorded_audio.wav");
+const fileStream = fs.createWriteStream(filePath, { encoding: "binary" });
+function recordAudio() {
+  audioStream = record.record({
+    sampleRate: 44100,
+    channels: 1,
+    verbose: true
+  }).stream();
+  audioStream.pipe(fileStream);
+  console.log("Recording started. Audio will be saved to:", filePath);
+}
+function stopRecording() {
+  if (audioStream) {
+    audioStream.unpipe(fileStream);
+    fileStream.end();
+    console.log("File saved to : ", filePath);
+  }
+}
+function exposeToFrontEnd(functions, window) {
   functions.forEach((func) => {
     electron.ipcMain.handle(func.name, async (event, ...args) => {
       try {
+        if (func == downloadPlaylist) {
+          return func(...args, window);
+        }
         return await func(...args);
       } catch (err) {
         console.log("Error bc: ", err);
@@ -115,13 +141,15 @@ function exposeToFrontEnd(functions) {
     });
   });
 }
-function setUpDirectoryManager() {
+function setUpDirectoryManager(win2) {
   const functions = [
     fetchAllPlaylists,
     downloadPlaylist,
-    fetchSongs
+    fetchSongs,
+    recordAudio,
+    stopRecording
   ];
-  exposeToFrontEnd(functions);
+  exposeToFrontEnd(functions, win2 = win2);
 }
 process.env.DIST = path$1.join(__dirname, "../dist");
 process.env.VITE_PUBLIC = electron.app.isPackaged ? process.env.DIST : path$1.join(process.env.DIST, "../public");
@@ -132,7 +160,8 @@ function createWindow() {
     icon: path$1.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
       preload: path$1.join(__dirname, "preload.js"),
-      webSecurity: false
+      webSecurity: false,
+      nodeIntegration: true
     },
     frame: false,
     transparent: true,
@@ -165,8 +194,8 @@ electron.app.on("activate", () => {
 });
 function startApp() {
   createDataFolder();
-  setUpDirectoryManager();
   createWindow();
+  setUpDirectoryManager(win);
   win == null ? void 0 : win.webContents.openDevTools({ mode: "detach" });
   setUpShortcut("Alt+M", win);
   setUpMouseListeners(win);
