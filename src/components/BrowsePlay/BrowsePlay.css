@@ -20,18 +20,20 @@ body {
 
   -webkit-font-smoothing: antialiased;
 }
+.main-div{
+
+  height: 85%;
+  width: 95%;
+}
 
 .add-ul {
   display: flex;
   flex-direction: row;
   list-style: none;
-  height: 13.6vh;
-  width: 22vw;
-  padding: 20px 0;
+  height: 96%;
+  width: 93%;
   margin: 0 ;
   overflow-x: scroll;
-  padding-left: 1%;
-  padding-right: 1%;
   border-radius: 25px;
 }
 
@@ -55,24 +57,23 @@ body {
 }
 
 .add-li,.item-cards {
-  flex: 0 0 120px;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 25%;
+  height: 70%;
   background: var(--accent);
-  margin: 0 30px 0 0;
+  margin: 0 10% 0 0;
   border-radius: 15px;
   opacity: 0.94;
   box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-
 }
 
-li:last-of-type {
-  margin: 0;
-}
 
 .add-data{
   display: flex;
   flex-direction: column;
-  margin-left: 2.5px;
-  width: 6vw;
+  margin-left: 1%;
+  width: 100%;
 }
 
 .add-butt{
@@ -80,7 +81,7 @@ li:last-of-type {
   flex-direction: row;
   /* justify-content: center;
   justify-items: center; */
-  margin-left: 27.5%;
+  margin-left: 31%;
   border-radius: 10px;
   margin-bottom: 8%;
   background: none;
@@ -93,26 +94,24 @@ li:last-of-type {
   border-radius: 25px;
 } */
 .add-li{
+  margin-top: 4%;
   padding-top: 4%;
   border-radius: 15px;
   opacity: 0.94;
 }
 .add-button{
-  height: 35px;
+  height: 45px;
   border: 2px solid rgba(0, 0, 0, 0.829);
   border-radius: 100%;
   cursor: pointer;
-}
-.add-button:active{
-  opacity: 0.9;
+  transition: 0.2s ease;
 }
 .txt-box{
-  margin-top: 4px;
+  margin-top: 4%;
   border-radius: 28px ;
-  margin-bottom: 5px;
+  margin-bottom: 5%;
   border: 1px  rgba(0, 0, 0, 0.274);
   outline: none;
-  font-size: 12px;
   font-family: Arial;
   width: 60%;
   margin-left: 18%;
@@ -121,8 +120,7 @@ li:last-of-type {
  
 }
 .txt-box::placeholder{
-  color: rgba(0, 0, 0, 0.548);
-  font-size: 9px; 
+  color: rgba(0, 0, 0, 0.548); 
   padding-left: 16%;
 }
 .txt-box:focus-within{
@@ -132,35 +130,56 @@ li:last-of-type {
 
 .item-cards{
   color: black;
-
+  margin-top: 4%;
+  height: 80%;
+  font-weight: bold;
 }
 
 .item-div{
-  /* border: 1px solid; */
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 15%;
 }
 
 .item-icon{
-  border: 1px solid;
+  margin-top:45%;
   border-radius: 100px;
   height: 50px;
-  margin-bottom: 17%;
+  margin-bottom: 35%;
+  border: 2px solid;
+  transition: 0.2s ease;
+}
+.refresh-icon{
+  border-radius: 100px;
+  margin-top: 8%;
+  height: 30px;
+  border: 2px solid;
+  transition: 0.2s ease;
+}
+.add-button:hover,.refresh-icon:hover,.item-icon:hover{
+  scale: 1.1;
+}
+.add-button:active,.refresh-icon:active,.item-icon:active{
+  scale: 0.9;
 }
 
+
 .box{
+  margin-top: 2%;
+  height: 15px;
   display: flex;
   cursor: pointer;
   background: #fafafa;
-  padding: 5px 20px;
+  padding: 10px 20px;
   border-radius: 30px;
+  justify-content: center;
   align-items: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+
 }
 .box:hover input{
-  width: 300px;
+  width: 400px;
 }
 .box input{
   width: 0;

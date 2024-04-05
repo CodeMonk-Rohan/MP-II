@@ -62,13 +62,13 @@ function MainScreen({audioRef}:mainScreenProps) {
     // }
     switch (target){
       case 'Browse':
-        return <ScreenWrapper children={<BrowsePlay data={playlistData} changeScreen={setActive} changePlaylist={setCurrentPlaylist} setPlaylistData={setPlaylistData}/>}/>
+        return <BrowsePlay data={playlistData} changeScreen={setActive} changePlaylist={setCurrentPlaylist} setPlaylistData={setPlaylistData}/>
 
       case 'Player':
-        return <ScreenWrapper children={<CustomPlayer audioRef={audioRef} currentPlaylist={currentPlaylist}/>}/>
+        return <CustomPlayer audioRef={audioRef} currentPlaylist={currentPlaylist}/>
 
        case 'Queue':
-        return <ScreenWrapper children={<Queue/>}/> 
+        return <Queue/>
         // i have removed (data={currentPlaylist}) from above line
     }
   }

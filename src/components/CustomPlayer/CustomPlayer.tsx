@@ -6,6 +6,7 @@ import next from "../../assets/next-button.svg"
 import prev from "../../assets/prev-button.svg"
 import { song } from "../../App";
 import { FiSearch } from 'react-icons/fi';
+import qicon from "../../assets/home-button.svg"
 
 
 type customPlayer = {
@@ -184,9 +185,9 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
       ease: [0, 0.71, 0.2, 1.01]
     }}>
           {/* PLAYER */}
-        <div>
-          <p onPointerDownCapture={(e) => e.stopPropagation()}>{currentTrack.name.slice(0, -5)}</p>
-          
+        <div className="player-side">
+          <p className="song-name">{currentTrack.name.slice(0, -5)}</p>
+   
         
           <motion.div>
             <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
@@ -232,24 +233,22 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
         </div>
               
         {/* QUEUE */}
-        <motion.div className="queue-card" whileHover={{ scale: 1.04 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+        <motion.div className="queue-card">
             
             <div className="q-card-search">
-              <input className="q-searchbox" type="text" onChange={handleSearchInput} placeholder="Search" onPointerDownCapture={(e) => e.stopPropagation()}></input>
-              <button className='q-search-icon'><FiSearch /></button>
+              <input className="q-searchbox" type="text" onChange={handleSearchInput} placeholder="Playlist- Playlist Name Here?" onPointerDownCapture={(e) => e.stopPropagation()}></input>
+              {/* <button className='q-search-icon'><FiSearch /></button> */}
             </div>
 
             <div className="main-queue-list">
-              <ol className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
-                                
+              <div className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
                                 {filteredSongs.map((song, index)=>(
-                                  <button key={index} className="q-item-names"><li > {song.name.slice(0, -5)} </li></button>
+                                  <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div > {song.name.slice(0, -5)} </div></button>
 
                                 ))}
 
                               
-              </ol>
+              </div>
             </div>
 
         </motion.div>
