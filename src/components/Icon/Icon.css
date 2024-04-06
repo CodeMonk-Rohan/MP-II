@@ -11,8 +11,6 @@
 
 .main-menu-icon-box{
     padding: 0.2ch;
-    border: 2px solid var(--primary-color);
-    background-color: var(--quaternary-color);
-    border-radius: 10px;
+    border-radius: 100px;
     
 }
