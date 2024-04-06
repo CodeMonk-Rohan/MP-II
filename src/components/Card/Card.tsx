@@ -1,7 +1,8 @@
 
 import "./Card.css";
-
 import { motion } from "framer-motion";
+
+
 export type childrenProp = {
   children: React.ReactNode;
 };

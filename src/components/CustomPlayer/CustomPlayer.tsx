@@ -188,7 +188,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
           <p className="song-name">{currentTrack.name.slice(0, -5)}</p>
    
         
-          <motion.div>
+          <motion.div className="seekbar-div">
             <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
           </motion.div>
 

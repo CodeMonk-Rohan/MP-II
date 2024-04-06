@@ -5,6 +5,7 @@ body {
   background: none;
   color: var(--accent);
   
+  
 }
 
 #root {
@@ -26,6 +27,7 @@ body {
   width: 95%;
 }
 
+
 .add-ul {
   display: flex;
   flex-direction: row;
@@ -36,16 +38,15 @@ body {
   overflow-x: scroll;
   border-radius: 25px;
 }
-
-
-::-webkit-scrollbar {
+.add-ul::-webkit-scrollbar{
   display: flex;
   /* border: 2px solid; */
   height: 10px;
   width: 12px;
-  background: rgba(255, 255, 255, 0.096);
+  background: rgba(255, 255, 255, 0.158);
   border-radius: 1ex;
 }
+
 
 ::-webkit-scrollbar-thumb {
   background: rgba(252, 224, 224, 0.733);
@@ -57,6 +58,7 @@ body {
 }
 
 .add-li,.item-cards {
+  transition: 0.3s ease;
   display: flex;
   flex-direction: column;
   flex: 0 0 25%;
@@ -64,11 +66,21 @@ body {
   background: var(--accent);
   margin: 0 10% 0 0;
   border-radius: 15px;
-  opacity: 0.94;
+  opacity: 1;
   box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
 }
 
-
+.add-li,.item-cards{
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.705), rgba(255, 255, 255, 0.329));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(10px);
+  border:1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.192);
+}
+.add-li:hover,.item-cards:hover{
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  scale: 1.05;
+}
 .add-data{
   display: flex;
   flex-direction: column;
@@ -77,11 +89,12 @@ body {
 }
 
 .add-butt{
+  margin-left: 30%;
   display: flex;
   flex-direction: row;
+  align-items: center;
   /* justify-content: center;
   justify-items: center; */
-  margin-left: 31%;
   border-radius: 10px;
   margin-bottom: 8%;
   background: none;
@@ -97,7 +110,7 @@ body {
   margin-top: 4%;
   padding-top: 4%;
   border-radius: 15px;
-  opacity: 0.94;
+  opacity: 1;
 }
 .add-button{
   height: 45px;
@@ -105,11 +118,12 @@ body {
   border-radius: 100%;
   cursor: pointer;
   transition: 0.2s ease;
+
 }
 .txt-box{
-  margin-top: 4%;
+  margin-top: 10%;
   border-radius: 28px ;
-  margin-bottom: 5%;
+  margin-bottom: 2%;
   border: 1px  rgba(0, 0, 0, 0.274);
   outline: none;
   font-family: Arial;
@@ -155,27 +169,39 @@ body {
   margin-top: 8%;
   height: 30px;
   border: 2px solid;
-  transition: 0.2s ease;
-}
-.add-button:hover,.refresh-icon:hover,.item-icon:hover{
+  transition: 0.2s ease;}
+
+  .refresh-global{
+    border-radius: 100px;
+    height: 17px;
+    transition: 0.2s ease;
+    padding-top: 10px;
+  }
+
+.add-button:hover,.refresh-icon:hover,.item-icon:hover,.refresh-global:hover{
   scale: 1.1;
 }
-.add-button:active,.refresh-icon:active,.item-icon:active{
+.add-button:active,.refresh-icon:active,.item-icon:active,.refresh-global:active{
   scale: 0.9;
 }
-
 
 .box{
   margin-top: 2%;
   height: 15px;
   display: flex;
   cursor: pointer;
-  background: #fafafa;
+  background: #fafafabd;
   padding: 10px 20px;
   border-radius: 30px;
   justify-content: center;
   align-items: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.685), rgba(255, 255, 255, 0.582));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(10px);
+  border:1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 
 }
 .box:hover input{
@@ -185,7 +211,9 @@ body {
   width: 0;
   outline: none;
   border: none;
-  font-weight: 500;
+  font-size: medium;
+  font-weight: bold;
   transition: 0.8s;
   background: transparent;
+  margin-bottom: 5px;
 }

@@ -169,14 +169,15 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
               ease: [0, 0.71, 0.2, 1.01]}}ref={ref}>
 
           {/* Search Bar */}
-          <div>
-            <input type="text" placeholder="Search" onChange={handleSearchInput} onPointerDownCapture={(e) => e.stopPropagation()}></input>
+          <div className="search-pill">
+            <input className="browse-search" type="text" placeholder="Search" onChange={handleSearchInput} onPointerDownCapture={(e) => e.stopPropagation()}></input>
             <FiSearch className='search-icon'/>
             {/* REFRESH BUTTON */}
-            <button onClick={fetchAllPlaylists}>Refresh</button>
+              <img className="refresh-global" src={refresh} onClick={fetchAllPlaylists}></img>
           </div>
 
         </motion.div>
+        
     <div className="main-div">
        
         
@@ -188,9 +189,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
               ease: [0, 0.71, 0.2, 1.01]}}
               ref={ref}>
                 
-                <motion.li className="add-li" onPointerDownCapture={(e) => e.stopPropagation()}
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+                <motion.li className="add-li" onPointerDownCapture={(e) => e.stopPropagation()}>
                     <button className="add-butt" onClick={()=>{downloadPlaylist(formData.name, formData.url)}}><img className="add-button"src={plus}></img></button>
                     <div className="add-data">
                     <input className="txt-box" type="text" placeholder="Name" value={formData.name} onChange={handleInputChange} name="name"></input>
@@ -199,7 +198,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                 </motion.li>
 
                 {filteredPlaylist.map((item, index)=>(
-                    <motion.li className="item-cards" key={index} whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}> 
+                    <motion.li className="item-cards" key={index}> 
                       <div className="item-div">
                           <div >
                             <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)}} ></img>
