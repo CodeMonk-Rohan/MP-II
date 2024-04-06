@@ -18,7 +18,7 @@
 
     z-index: 2;
 
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.274), rgba(255, 255, 255, 0.270));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.671), rgba(255, 255, 255, 0.596));
     backdrop-filter: blur(35px);
     -webkit-backdrop-filter: blur(30px);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
