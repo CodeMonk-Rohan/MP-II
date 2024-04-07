@@ -70,7 +70,8 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     
     
   }, [data])
-  // TO DO:
+
+
   // This function is to be called when the python process sends a signal with a response code from the main process  
   async function fetchAllPlaylists() {
     const data = await window.ipcRenderer.invoke("fetchAllPlaylists") 
@@ -97,6 +98,12 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   // console.log(data)
 
   async function downloadPlaylist(URL: string, PlaylistName: string) {
+    if(URL.length === 0 || PlaylistName.length === 0){
+      toast.warn("Invalid Input")
+      return
+    }
+    
+    
     if(downloading == true){
       toast.warn("Busy")
       return
@@ -188,7 +195,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
               delay: 0,
               ease: [0, 0.71, 0.2, 1.01]}}
               ref={ref}>
-                
+                {/* Download Playlist Card */}
                 <motion.li className="add-li" onPointerDownCapture={(e) => e.stopPropagation()}>
                     <button className="add-butt" onClick={()=>{downloadPlaylist(formData.name, formData.url)}}><img className="add-button"src={plus}></img></button>
                     <div className="add-data">
@@ -197,6 +204,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                     </div>
                 </motion.li>
 
+                {/* User Playlist Cards */}
                 {filteredPlaylist.map((item, index)=>(
                     <motion.li className="item-cards" key={index}> 
                       <div className="item-div">

@@ -169,6 +169,14 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
 
   }
 
+  function changeSong(song:song){
+    if(audioElem.current){
+      setPlaying(true)
+      setCurrentTrack(song)
+      audioElem.current.src = song.path
+    }
+  }
+
   //=====To=be=implemented==========
   function handleRepeat() {}
 
@@ -235,7 +243,8 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
               <div className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
 
                     {filteredSongs.map((song, index)=>(
-                      <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div> {song.name.slice(0, 30)}... </div></button>
+                      // Currently I am making it so that when you click on the song block, you will start playing that song, let me know if you need to switch this to a specfic button on it instead
+                      <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div onClick={()=>changeSong(song)}> {song.name.slice(0, 30)}... </div></button>
 
                     ))}
                               
