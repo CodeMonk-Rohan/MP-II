@@ -90,7 +90,7 @@ function MainScreen({audioRef}:mainScreenProps) {
         </Card>
 
         {/* Audio element is always present, globally so the song doesn't stop when moving between screens */}
-        <audio ref={audioRef}></audio>
+        
       </div>
     </>
   );

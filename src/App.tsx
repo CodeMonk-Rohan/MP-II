@@ -24,7 +24,7 @@ function App() {
 
     <MainScreen audioRef={audioRef} ></MainScreen>
 
-    <audio ref={audioRef} autoPlay></audio>
+    <audio ref={audioRef}></audio>
     <ToastContainer position="bottom-center"/>
   </div>
   

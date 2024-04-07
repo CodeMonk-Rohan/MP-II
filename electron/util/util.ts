@@ -93,7 +93,7 @@ export function fetchAllPlaylists() {
       const url = MetaData[1];
       const name = MetaData[0];
       fileDataJSON.push({ name: name, url: url });
-      console.log("Pushed data");
+      
       
     });
     return fileDataJSON;
