@@ -77,7 +77,7 @@ export function createDataFolder() {
   }
 }
 
-//implemented - Needs more work
+//implemented
 export function fetchAllPlaylists() {
   try {
     // Lesson that I learnt. Just save the damn file in JSONified string instead of parsing it every damn time 😭
@@ -87,9 +87,14 @@ export function fetchAllPlaylists() {
     const fileDataJSON: Object[] = [];
     playlist.forEach((item) => {
       const MetaData = item.split("|sep|");
+      if(MetaData.length === 0){
+        return
+      }
       const url = MetaData[1];
       const name = MetaData[0];
       fileDataJSON.push({ name: name, url: url });
+      console.log("Pushed data");
+      
     });
     return fileDataJSON;
   } catch (err) {
@@ -97,7 +102,7 @@ export function fetchAllPlaylists() {
   }
 }
 
-//implementing
+//implemented
 export function fetchSongs(playlist: string) {
   //Read text file within the folder, this will get you the data
   const playlistFolder = path.join(dataFolderPath, playlist);
@@ -109,6 +114,9 @@ export function fetchSongs(playlist: string) {
     const songs : string[] = fileData.split("\n")
     
     songs.forEach((song)=>{
+      //ignore empty lines
+      if(song.length === 0) return;
+
       const songPath = song
       const songName = path.basename(song)
       fileDataJSON.push({name:songName, path:songPath})
@@ -178,7 +186,7 @@ export async function downloadPlaylist(url: string, name: string, win: BrowserWi
 }
 
 
-
+//--Mic Audio NOT SYSTEM AUDIO---
 //audio stream variable
 let audioStream :any;
 const filePath = path.join(__dirname, 'recorded_audio.wav');

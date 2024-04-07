@@ -128,6 +128,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
     console.log(nextIndex,"<-----", index, currentPlaylist)
     setCurrentTrack(currentPlaylist[nextIndex])
     if(audioElem.current){
+      setPlaying(true) //change the play button to reflect this change
       audioElem.current.src = currentPlaylist[nextIndex].path
       
     } 
@@ -146,6 +147,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
     const nextIndex = (index - 1) % length
     setCurrentTrack(currentPlaylist[nextIndex])
     if(audioElem.current){
+      setPlaying(true) // changing the play button to reflect the change
       audioElem.current.src = currentPlaylist[nextIndex].path
       
     }

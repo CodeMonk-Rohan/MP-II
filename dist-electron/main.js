@@ -45,9 +45,13 @@ function fetchAllPlaylists() {
     const fileDataJSON = [];
     playlist.forEach((item) => {
       const MetaData = item.split("|sep|");
+      if (MetaData.length === 0) {
+        return;
+      }
       const url = MetaData[1];
       const name = MetaData[0];
       fileDataJSON.push({ name, url });
+      console.log("Pushed data");
     });
     return fileDataJSON;
   } catch (err) {
@@ -62,6 +66,8 @@ function fetchSongs(playlist) {
     const fileDataJSON = [];
     const songs = fileData.split("\n");
     songs.forEach((song) => {
+      if (song.length === 0)
+        return;
       const songPath = song;
       const songName = path.basename(song);
       fileDataJSON.push({ name: songName, path: songPath });

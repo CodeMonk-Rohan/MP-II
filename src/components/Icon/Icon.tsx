@@ -5,12 +5,13 @@ import homeButton from "../../../src/assets/home-button.svg"
 
 type customFunc = {
   setter: Function;
-  name:string
+  name:string;
+  iconFile:string;
 }
 
-export default function Icon({setter, name}:customFunc) {
+export default function Icon({setter, name, iconFile=homeButton}:customFunc) {
   //Currently possesing dummy works
-  // TO DO: Implement prop passing, Implement action
+  // TO DO: Implement prop passing, Implement action | Done, but needs refining  
 
   return (
     <motion.div
@@ -23,7 +24,7 @@ export default function Icon({setter, name}:customFunc) {
     >
       <motion.img
         className="main-menu-icon"
-        src={homeButton}
+        src={iconFile}
         whileHover={{
           scale: 1.1,
            
