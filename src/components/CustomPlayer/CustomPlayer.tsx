@@ -176,13 +176,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
 
   return (
 
-    <motion.div className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.8,
-      delay: 0,
-      ease: [0, 0.71, 0.2, 1.01]
-    }}>
+    <motion.div className="custom-player">
           {/* PLAYER */}
         <div className="player-side">
           <p className="song-name">{currentTrack.name.slice(0, -5)}</p>
@@ -239,7 +233,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
               <div className="queue-list" onPointerDownCapture={(e) => e.stopPropagation()}>
 
                     {filteredSongs.map((song, index)=>(
-                      <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div> {song.name.slice(0, -5)} </div></button>
+                      <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div> {song.name.slice(0, 30)}... </div></button>
 
                     ))}
                               
