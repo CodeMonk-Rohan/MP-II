@@ -5,7 +5,7 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 import next from "../../assets/next-button.svg"
 import prev from "../../assets/prev-button.svg"
 import { song } from "../../App";
-import qicon from "../../assets/home-button.svg"
+import qicon from "../../assets/music-alt.svg"
 
 
 type customPlayer = {
@@ -198,12 +198,17 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
 
   return (
 
-    <motion.div className="custom-player">
+    <motion.div  className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{
+      duration: 0.8,
+      delay: 0,
+      ease: [0, 0.71, 0.2, 1.01]}}>
           {/* PLAYER */}
         <div className="player-side">
-          <p className="song-name">{currentTrack.name.slice(0, -5)}</p>
+
+          <p className="song-name">{currentTrack.name.slice(0, 74 )} ...</p>
    
-        
           <motion.div className="seekbar-div">
             <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
           </motion.div>

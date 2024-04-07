@@ -1,6 +1,5 @@
 import "./Icon.css";
 import { motion } from "framer-motion";
-import homeButton from "../../../src/assets/home-button.svg"
 
 
 type customFunc = {
@@ -9,7 +8,7 @@ type customFunc = {
   iconFile:string;
 }
 
-export default function Icon({setter, name, iconFile=homeButton}:customFunc) {
+export default function Icon({setter, name, iconFile}:customFunc) {
   //Currently possesing dummy works
   // TO DO: Implement prop passing, Implement action | Done, but needs refining  
 
@@ -18,7 +17,6 @@ export default function Icon({setter, name, iconFile=homeButton}:customFunc) {
       className="main-menu-icon-box"
       whileHover={{
         scale: 1.05,
-        boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.2)",
       }}
       onClick={()=>{setter(name)}}
     >
@@ -26,8 +24,7 @@ export default function Icon({setter, name, iconFile=homeButton}:customFunc) {
         className="main-menu-icon"
         src={iconFile}
         whileHover={{
-          scale: 1.1,
-           
+          scale: 1.08,
           // rotate: 360,
         }}
         transition={{ duration: 5, loop: Infinity, ease: "circOut"}}
