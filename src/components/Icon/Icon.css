@@ -1,16 +1,21 @@
 .main-menu-icon{
     outline: none;
     border: none;
-    background-color: transparent;
+    background-color: none;
+    background: none;
     max-width: 2vw;
     display: flex;
-    
-    
+    height: 26px;
+    transition: 0.4s ease;
+    cursor: pointer;
 }
-
+.main-menu-icon:active{
+    scale: 0.7;
+  }
 
 .main-menu-icon-box{
-    padding: 0.2ch;
+    padding: 0.5ch;
     border-radius: 100px;
+    border: transparent;
     
 }

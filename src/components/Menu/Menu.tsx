@@ -1,8 +1,9 @@
 import "./Menu.css";
 import { motion } from "framer-motion";
 import Icon from "../Icon/Icon";
-import settingsButton from '../../assets/settings-button.svg'
-import anotherButton from '../../assets/refresh-button.svg'
+import browseButton from '../../assets/list-music (2).svg'
+import settingsButton from '../../assets/settings-sliders.svg'
+import playerButton from "../../assets/waveform.svg"
 
 export type childFunc = {
   setter: Function
@@ -17,9 +18,9 @@ export default function Menu({setter}: childFunc) {
       transition={{ duration: 0.3, delay: 0.2 }}
     >
     
-        <Icon setter={setter} name="Browse" iconFile={settingsButton}/>
-        <Icon setter={setter} name="Player" />
-        <Icon setter={setter} name="Queue" iconFile={anotherButton}/>
+        <Icon setter={setter} name="Browse" iconFile={browseButton}/>
+        <Icon setter={setter} name="Player" iconFile={playerButton}/>
+        <Icon setter={setter} name="Queue" iconFile={settingsButton}/>
       
     </motion.div>
   );

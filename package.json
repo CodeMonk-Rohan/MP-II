@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.1.0",
     "electron-vite": "^2.1.0",
     "framer-motion": "^11.0.23",
     "node-record-lpcm16": "^1.0.1",
