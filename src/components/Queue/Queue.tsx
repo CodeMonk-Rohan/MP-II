@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 export default function Queue() {
     
 
-    const [songdata, setSongdata] = useState("")
+    const [songdata, setSongdata] = useState({})
 
     useEffect(()=>{
 
@@ -12,8 +12,14 @@ export default function Queue() {
             data = data.slice(2,-3)
             data = JSON.parse(data)
             console.log(data);
-            
-            
+            // resulting data has the following keys
+            // result_type : Currently have not made enough calls to know what kind of information this represents. No documentation mentions this either.
+            // status : {
+            //      "msg"    : Sucess | Failed  // Pretty much common sense
+            //      "code"   : Integer value, 0 for most songs I queried.
+            //      "version": Irrelvant to us
+            //}
+            //
         }
 
         window.ipcRenderer.on("found-song", handleFound )
