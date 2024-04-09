@@ -7,14 +7,47 @@ import recButton from "../../assets/home-button.svg"
 export default function Queue() {
     
 
-    const [songdata, setSongdata] = useState({})
+    const [songdata, setSongdata] = useState<any>({})
+    const [songName, setName] = useState("Wanna find what's playing right now?")
+    const [artistName, setArtist] = useState("Click on the Music Icon to record and find out!")
+    const [ytLink, setYtLink] = useState("")
 
     useEffect(()=>{
 
-        async function handleFound(event:any, data:string){
+        async function handleFound(event:any, data:any){
             console.log("found - s o n g ")
             data = data.slice(2,-3)
+            data = decodeURIComponent(data)
+            data = data.replace(/\\/g, '\\\\');
+            console.log(data)
             data = JSON.parse(data)
+
+            
+
+            if(data.metadata){
+                if(data.status.msg === "Success"){
+                    setName(data.metadata.music[0].title)
+                    setArtist(data.metadata.music[0].artists[0].name)
+
+                    if(data.metadata.music[0].external_metadata){
+                        if(data.metadata.music[0].external_metadata.youtube){
+                            setYtLink(`https://www.youtube.com/watch?v=${data.metadata.music[0].external_metadata.youtube.vid}`)
+                        }else{
+                            //Handle else
+                        }
+                    }else{
+                        //This is the situation where no external yt_links were found
+                    }   
+                }else{
+                    // Request failed, could not identify
+                    setName("Wanna find what's playing right now?")
+                    setArtist("Click on the button to try again")
+                    setYtLink("")
+                }
+                
+            
+            }
+
             console.log(data);
             // resulting data has the following keys
             // result_type : Currently have not made enough calls to know what kind of information this represents. No documentation mentions this either.
@@ -22,11 +55,13 @@ export default function Queue() {
             //      "msg"    : Sucess | Failed  // Pretty much common sense
             //      "code"   : Integer value, 0 for most songs I queried.
             //      "version": Irrelvant to us
-            //}
+            //  }
+            // metadata.music[0].title
+            // metadata.music[0].artists[0].name
             //
         }
 
-        window.ipcRenderer.on("found-song", handleFound )
+        window.ipcRenderer.on("found-song", handleFound)
 
         return ()=>{
             window.ipcRenderer.removeListener("found-song", handleFound)
@@ -38,12 +73,20 @@ export default function Queue() {
     }, [songdata])
 
     async function recogniseAudio(){
+        setName("Recording...")
+        setTimeout(()=>{
+            setArtist("This can take a while...")
+        }, 7000)
+
         try{
             console.log("calling the main process....")
             const data = await window.ipcRenderer.invoke("recogniseAudio")
             console.log("data recieved from the Main process: ", data)
         }catch(err){
             console.log(err)
+            setName("There was an error while detecting.")
+            setArtist("Click on the button to try again")
+            setYtLink("")
         }
     }
     
@@ -61,20 +104,20 @@ export default function Queue() {
           delay: 0,
           ease: [0, 0.71, 0.2, 1.01]}} >
                 <div className="rec-side">
-                   <img src={recButton}className="rec-button"></img>
+                   <img src={recButton} className="rec-button" onClick={recogniseAudio}></img>
                     {/* <button onClick={stopRecording} >Stop Recording</button> */}
                 </div>
                 <div className="detail-side">
                     <div className="song-details">
                         <div className="info">
-                            <p >Song Name Here</p>
-                            <p>Artist Name</p>
+                            <p>{songName}</p>
+                            <p>{artistName}</p>
                         </div>
                     </div>
-                    <div className="link">
+                    {ytLink === "" ? <></> : <div className="link">
                         <img className="yt-icon" src={yticon}></img>
-                        <p> Click Here</p>
-                    </div>
+                        <a href={ytLink}>Link</a>
+                    </div>}
                 </div>
         </motion.div>
 
