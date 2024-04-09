@@ -27,16 +27,23 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.43);
-  let index = 0
+  const [index, setIndex] = useState(0)
   const [currentTrack, setCurrentTrack] = useState<song>(currentPlaylist[0])
   
   const [filteredSongs, setFilteredSongs] = useState(currentPlaylist)
 
   useEffect(()=>{
     console.log("Current track update was fired: new value = ", currentTrack.name);
-    console.log("Cur index: ", index);
+    if(audioElem.current){
+      // audioElem.current.src = currentTrack.path
+      // audioElem.current.play()
+    }
+  }, [currentTrack])
+
+  useEffect(()=>{
+    console.log("Current index: ", index);
     
-  }, [currentTrack, index])
+  }, [index])
 
   // Updating the currentTime to be consumed while rendering the seekbar
   // All first time initialisation steps performed here
@@ -47,7 +54,10 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
     if(audioElem.current){
       audioElem.current.volume = volume;
       
-      audioElem.current.src = currentTrack.path == "No path loaded" ? currentPlaylist[0].path : currentTrack.path
+      audioElem.current.src = currentPlaylist[index].path
+      if(index !== 0){
+        audioElem.current.play()
+      }
     }
 
     function updateTime(){
@@ -82,7 +92,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
       audioElem.current?.removeEventListener('ended', handleNext);
     };
 
-  }, []);
+  }, [index]);
 
   //===========Working===============
   function handleMusicToggle() {
@@ -110,7 +120,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
   const handleVolume = (e:React.ChangeEvent<HTMLInputElement>) =>{
     const seekTime = parseFloat(e.target.value);
     setVolume(seekTime);
-    console.log(audioElem.current?.volume)
+    // console.log(audioElem.current?.volume)
     if(audioElem.current){
       audioElem.current.volume = volume
     }
@@ -129,17 +139,21 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
     // index = currentPlaylist.indexOf(currentTrack)
     const length = currentPlaylist.length
 
-    let nextIndex = (index + 1) % length === 0 ? length - 1 : (index + 1) % length;
-    console.log(index, nextIndex, currentPlaylist[(index+1)%10]);
+    
     
 
     
     if(audioElem.current){
+      let nextIndex = (index+1)%length
       setPlaying(true) //change the play button to reflect this change
-      audioElem.current.src = currentPlaylist[nextIndex].path
-      audioElem.current.play()
+      console.log(audioElem.current.src)
+
+      // audioElem.current.src = currentPlaylist[nextIndex].path
+      console.log(audioElem.current.src)
+      
       setCurrentTrack(currentPlaylist[nextIndex])
-      index = (index +1)
+      setIndex(index=>(index+1)%length)
+
     } 
     
     // console.log(nextIndex, "Next: ", currentPlaylist[nextIndex])
@@ -155,6 +169,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
     const length = currentPlaylist.length
 
     const nextIndex = (index - 1) % length
+    setIndex(index=>index-1)
     setCurrentTrack(currentPlaylist[nextIndex])
     if(audioElem.current){
       setPlaying(true) // changing the play button to reflect the change
@@ -180,11 +195,13 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
   }
 
   function changeSong(song:song){
+    const indexOfSelectedSong = currentPlaylist.indexOf(song)
     if(audioElem.current){
       setPlaying(true)
       // index = currentPlaylist.indexOf(song)
       setCurrentTrack(song)
       audioElem.current.src = song.path
+      setIndex(oldIndex=>indexOfSelectedSong)
       audioElem.current.play()
     }
   }
