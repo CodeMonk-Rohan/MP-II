@@ -4,10 +4,12 @@ const path$1 = require("node:path");
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
-const record = require("node-record-lpcm16");
+require("node-record-lpcm16");
+require("acrcloud");
 const dataFolderPath = path.join(__dirname, "data");
 const userFile = path.join(__dirname, "userData.txt");
 const pythonDir = path.join(__dirname, "python/utility2.py");
+const recordingDirectory = path.join(__dirname, "sysAudioRecorder");
 function setUpShortcut(keyCombination, win2) {
   electron.globalShortcut.register(keyCombination, () => {
     if (win2 == null ? void 0 : win2.isVisible()) {
@@ -86,21 +88,15 @@ async function downloadPlaylist(url, name, win2) {
   try {
     const data = await fs.appendFileSync(userFile, dataToAdd);
     console.log("calling process...");
-    const pythonProcess = spawn(
-      "python",
-      [
-        downloadScript,
-        name,
-        url
-      ],
-      {
-        stdio: ["inherit", "inherit", "inherit"],
-        encoding: "utf-8"
-      }
-    );
+    const pythonProcess = spawn("python", [downloadScript, name, url], {
+      stdio: ["inherit", "inherit", "inherit"],
+      encoding: "utf-8"
+    });
     console.log("calling script: ", downloadScript);
     pythonProcess.on("exit", (code, signal) => {
-      console.log(`Python process exited with code ${code} and signal ${signal}`);
+      console.log(
+        `Python process exited with code ${code} and signal ${signal}`
+      );
       win2 == null ? void 0 : win2.webContents.send("Downloaded");
     });
     pythonProcess.on("error", (err) => {
@@ -113,24 +109,21 @@ async function downloadPlaylist(url, name, win2) {
     console.log(err);
   }
 }
-let audioStream;
-const filePath = path.join(__dirname, "recorded_audio.wav");
-const fileStream = fs.createWriteStream(filePath, { encoding: "binary" });
-function recordAudio() {
-  audioStream = record.record({
-    sampleRate: 44100,
-    channels: 1,
-    verbose: true
-  }).stream();
-  audioStream.pipe(fileStream);
-  console.log("Recording started. Audio will be saved to:", filePath);
-}
-function stopRecording() {
-  if (audioStream) {
-    audioStream.unpipe(fileStream);
-    fileStream.end();
-    console.log("File saved to : ", filePath);
-  }
+function recogniseAudio() {
+  path.join(recordingDirectory);
+  const pathToRecorder = path.join(recordingDirectory, "Rec.exe");
+  console.log("calling Rec.exe");
+  const recorder = spawn(pathToRecorder, [recordingDirectory + "\\"], {
+    stdio: ["inherit", "inherit", "inherit"],
+    encoding: "utf-8"
+  });
+  recorder.on("error", (err) => {
+    console.error("Recorder encountered an error");
+  });
+  recorder.on("exit", (code, signal) => {
+    console.log("Recorder Finished Recording");
+  });
+  return "something";
 }
 function exposeToFrontEnd(functions, window) {
   functions.forEach((func) => {
@@ -151,8 +144,7 @@ function setUpDirectoryManager(win2) {
     fetchAllPlaylists,
     downloadPlaylist,
     fetchSongs,
-    recordAudio,
-    stopRecording
+    recogniseAudio
   ];
   exposeToFrontEnd(functions, win2 = win2);
 }

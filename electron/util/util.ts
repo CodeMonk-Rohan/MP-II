@@ -3,16 +3,14 @@ import { globalShortcut } from "electron";
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
-const record = require("node-record-lpcm16")
+const record = require("node-record-lpcm16");
+const acrcloud = require("acrcloud");
 
 //Setting up relative paths, so the app is independent of its position in the file tree
 const dataFolderPath = path.join(__dirname, "data");
 const userFile = path.join(__dirname, "userData.txt");
 const pythonDir = path.join(__dirname, "python/utility2.py"); //utility2 is the updated version of the script with better file writing
-
-
-
-
+const recordingDirectory = path.join(__dirname, "sysAudioRecorder");
 
 //Logic to display and hide the overlay as needed, the shorcut key may be remapped to whatever, in the main.ts file
 export function setUpShortcut(
@@ -87,14 +85,12 @@ export function fetchAllPlaylists() {
     const fileDataJSON: Object[] = [];
     playlist.forEach((item) => {
       const MetaData = item.split("|sep|");
-      if(MetaData.length === 0){
-        return
+      if (MetaData.length === 0) {
+        return;
       }
       const url = MetaData[1];
       const name = MetaData[0];
       fileDataJSON.push({ name: name, url: url });
-      
-      
     });
     return fileDataJSON;
   } catch (err) {
@@ -108,38 +104,36 @@ export function fetchSongs(playlist: string) {
   const playlistFolder = path.join(dataFolderPath, playlist);
   const playlistDataFile = path.join(playlistFolder, `downloaded_files.txt`);
   try {
-    const fileData = fs.readFileSync(playlistDataFile, 'utf-8');
-    const fileDataJSON:Object[] = []
-    
-    const songs : string[] = fileData.split("\n")
-    
-    songs.forEach((song)=>{
+    const fileData = fs.readFileSync(playlistDataFile, "utf-8");
+    const fileDataJSON: Object[] = [];
+
+    const songs: string[] = fileData.split("\n");
+
+    songs.forEach((song) => {
       //ignore empty lines
-      if(song.length === 0) return;
+      if (song.length === 0) return;
 
-      const songPath = song
-      const songName = path.basename(song)
-      fileDataJSON.push({name:songName, path:songPath})
-    })
- 
-    return fileDataJSON
+      const songPath = song;
+      const songName = path.basename(song);
+      fileDataJSON.push({ name: songName, path: songPath });
+    });
 
+    return fileDataJSON;
   } catch (err) {
     console.log(err);
   }
 }
 
-export async function downloadPlaylist(url: string, name: string, win: BrowserWindow | null) {
-  
-  if (url.length == 0 || name.length==0){
+//impmlemented
+export async function downloadPlaylist(
+  url: string,
+  name: string,
+  win: BrowserWindow | null
+) {
+  if (url.length == 0 || name.length == 0) {
     console.log("Empty fields, stopping creation of creation of subprocess");
-    return
+    return;
   }
-
-
-  
-
-
 
   // Invoke yt-dlp python scripts
   // Also write to the userfile
@@ -155,28 +149,24 @@ export async function downloadPlaylist(url: string, name: string, win: BrowserWi
     //Python process to be called here
     console.log("calling process...");
 
-    const pythonProcess = spawn("python", [
-      downloadScript,
-      name,
-      url
-    ], 
-    {
-      stdio: ['inherit', 'inherit', 'inherit'],
-      encoding:'utf-8'
+    const pythonProcess = spawn("python", [downloadScript, name, url], {
+      stdio: ["inherit", "inherit", "inherit"],
+      encoding: "utf-8",
     });
-
 
     console.log("calling script: ", downloadScript);
 
-    pythonProcess.on('exit', (code:any, signal:any) => {
-      console.log(`Python process exited with code ${code} and signal ${signal}`);
-      win?.webContents.send("Downloaded")
+    pythonProcess.on("exit", (code: any, signal: any) => {
+      console.log(
+        `Python process exited with code ${code} and signal ${signal}`
+      );
+      win?.webContents.send("Downloaded");
     });
-    
-    pythonProcess.on('error', (err:any) => {
-      console.error('Failed to start Python process:', err);
-      console.log(win, win?.webContents)
-      win?.webContents.send(`Failed`)
+
+    pythonProcess.on("error", (err: any) => {
+      console.error("Failed to start Python process:", err);
+      console.log(win, win?.webContents);
+      win?.webContents.send(`Failed`);
     });
     //return?
     return data;
@@ -185,31 +175,55 @@ export async function downloadPlaylist(url: string, name: string, win: BrowserWi
   }
 }
 
+//new approach
+export function recogniseAudio() {
 
-//--Mic Audio NOT SYSTEM AUDIO---
-//audio stream variable
-let audioStream :any;
-const filePath = path.join(__dirname, 'recorded_audio.wav');
-const fileStream = fs.createWriteStream(filePath, { encoding: 'binary' });
+  const recordedAudioPath = path.join(recordingDirectory);
+  //It was hell researching how to record system audio 😭
+  const pathToRecorder = path.join(recordingDirectory, "Rec.exe");
 
+  
+  console.log("calling Rec.exe");
+  
+  const recorder = spawn(pathToRecorder, [recordingDirectory+"\\"], {
+    stdio: ["inherit", "inherit", "inherit"],
+    encoding: "utf-8",
+  });
 
-export function recordAudio(){
-
-  audioStream = record.record({
-    sampleRate:44100,
-    channels:1,
-    verbose:true,
-  }).stream()
-
-  audioStream.pipe(fileStream);
-
-  console.log('Recording started. Audio will be saved to:', filePath);}
-
-export function stopRecording(){
-   if(audioStream){
-    audioStream.unpipe(fileStream); //stop writing to the file
-    fileStream.end() //end of file stream
-    console.log("File saved to : ", filePath)
-   }
+  recorder.on("error", (err: any) => {
+    console.error("Recorder encountered an error");
+  })
+  
+  recorder.on("exit", (code: any, signal: any) => {
+    console.log("Recorder Finished Recording")
+  });
+  
+  return "something"
 }
 
+//OLD APPROACH, I found a better solution using a wrapper over windows core audio API to capture direct speaker output. It's implemented above.
+//--Mic Audio NOT SYSTEM AUDIO---
+//audio stream variable
+// let audioStream :any;
+// const filePath = path.join(__dirname, 'recorded_audio.wav');
+// const fileStream = fs.createWriteStream(filePath, { encoding: 'binary' });
+
+// export function recordAudio(){
+
+//   audioStream = record.record({
+//     sampleRate:44100,
+//     channels:1,
+//     verbose:true,
+//   }).stream()
+
+//   audioStream.pipe(fileStream);
+
+//   console.log('Recording started. Audio will be saved to:', filePath);}
+
+// export function stopRecording(){
+//    if(audioStream){
+//     audioStream.unpipe(fileStream); //stop writing to the file
+//     fileStream.end() //end of file stream
+//     console.log("File saved to : ", filePath)
+//    }
+// }

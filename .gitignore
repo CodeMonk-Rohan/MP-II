@@ -26,3 +26,6 @@ release
 *.sw?
 *.mp3
 *.m4a
+
+#config files
+config.py

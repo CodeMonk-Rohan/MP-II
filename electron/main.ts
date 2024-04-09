@@ -1,7 +1,7 @@
-import { app, BrowserWindow} from 'electron'
+import { app, BrowserWindow, ipcMain} from 'electron'
 
 import path from 'node:path'
-import { createDataFolder, setUpMouseListeners, setUpShortcut } from './util/util'
+import { createDataFolder, recogniseAudio, setUpMouseListeners, setUpShortcut } from './util/util'
 import { setUpDirectoryManager } from './util/expose'
 
 // The built directory structure
@@ -86,6 +86,7 @@ function startApp(){
 
   //functions requiring window must be called after creating the damn window (who would have thought?)
   setUpDirectoryManager(win)
+
 
   //Opening dev tools
   win?.webContents.openDevTools({mode:"detach"})
