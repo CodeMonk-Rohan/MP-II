@@ -94,9 +94,6 @@ function startApp(){
   //attaching shortcuts
   setUpShortcut("Alt+M", win)
 
-
-  
-
   //set up mouse listeners (this ensures that the mouse events are ignore if its not within the application)
   setUpMouseListeners(win)
 }

@@ -3,7 +3,7 @@ const electron = require("electron");
 const path$1 = require("node:path");
 const fs = require("fs");
 const path = require("path");
-const { spawn } = require("child_process");
+const { spawn, spawnSync } = require("child_process");
 require("node-record-lpcm16");
 require("acrcloud");
 const dataFolderPath = path.join(__dirname, "data");
@@ -109,12 +109,13 @@ async function downloadPlaylist(url, name, win2) {
     console.log(err);
   }
 }
-function recogniseAudio() {
-  path.join(recordingDirectory);
+async function recogniseAudio(win2) {
+  const recordedAudioPath = path.join(recordingDirectory);
   const pathToRecorder = path.join(recordingDirectory, "Rec.exe");
+  let pythonOutput = "";
   console.log("calling Rec.exe");
   const recorder = spawn(pathToRecorder, [recordingDirectory + "\\"], {
-    stdio: ["inherit", "inherit", "inherit"],
+    stdio: ["pipe", "pipe", "pipe"],
     encoding: "utf-8"
   });
   recorder.on("error", (err) => {
@@ -122,14 +123,36 @@ function recogniseAudio() {
   });
   recorder.on("exit", (code, signal) => {
     console.log("Recorder Finished Recording");
+    console.log(pythonDir);
+    setTimeout(() => {
+      const audio_sample_path = path.join(recordedAudioPath, "myRecording.wav");
+      const pythonRecogniseScript = path.join(__dirname, "python/acrCloud/acrTest.py");
+      const pythonProcess = spawn("python", [pythonRecogniseScript, audio_sample_path], {
+        stdio: ["pipe", "pipe", "pipe"],
+        encoding: "utf-8"
+      });
+      pythonProcess.on("error", (err) => {
+        console.error("Recorder encountered an error");
+      });
+      pythonProcess.on("exit", (code2, signal2) => {
+        console.log("Finished without errors");
+        console.log(pythonOutput);
+        win2 == null ? void 0 : win2.webContents.send("found-song", pythonOutput.toString());
+      });
+      if (pythonProcess.stdout) {
+        pythonProcess.stdout.on("data", (data) => {
+          pythonOutput += data.toString("utf-8").trim();
+          console.log("Sending 'found-song' signal");
+        });
+      }
+    }, 500);
   });
-  return "something";
 }
 function exposeToFrontEnd(functions, window) {
   functions.forEach((func) => {
     electron.ipcMain.handle(func.name, async (event, ...args) => {
       try {
-        if (func == downloadPlaylist) {
+        if (func == downloadPlaylist || func == recogniseAudio) {
           return func(...args, window);
         }
         return await func(...args);

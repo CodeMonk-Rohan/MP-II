@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 """
 This is a demo program which implements ACRCloud Identify Protocol V1 with the third party library "requests".
 We recomment you implement your own app with "requests" too.
@@ -60,4 +60,4 @@ data = {'access_key': access_key,
 
 r = requests.post(requrl, files=files, data=data)
 r.encoding = "utf-8"
-print(r.text)
+print(r.text.encode(encoding="utf-8"))
