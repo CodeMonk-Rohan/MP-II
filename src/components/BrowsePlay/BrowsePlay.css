@@ -159,11 +159,14 @@ body {
   height: 50px;
   margin-bottom: 35%;
   transition: 0.2s ease;
+  cursor: pointer;
 }
 .refresh-icon{
   margin-top: 13%;
   height: 20px;
-  transition: 0.2s ease;}
+  transition: 0.2s ease;
+  cursor: pointer;
+}
 
   .refresh-global{
     border-radius: 100px;
