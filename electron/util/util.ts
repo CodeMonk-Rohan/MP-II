@@ -2,9 +2,12 @@ import { BrowserWindow, ipcMain, protocol, net } from "electron";
 import { globalShortcut } from "electron";
 const fs = require("fs");
 const path = require("path");
-const { spawn } = require("child_process");
+const { spawn, spawnSync} = require("child_process");
 const record = require("node-record-lpcm16");
 const acrcloud = require("acrcloud");
+
+import { config } from "./config";
+import { access } from "original-fs";
 
 //Setting up relative paths, so the app is independent of its position in the file tree
 const dataFolderPath = path.join(__dirname, "data");
@@ -176,19 +179,20 @@ export async function downloadPlaylist(
 }
 
 //new approach
-export function recogniseAudio() {
+export async function recogniseAudio(win:BrowserWindow|null) {
 
   const recordedAudioPath = path.join(recordingDirectory);
   //It was hell researching how to record system audio 😭
   const pathToRecorder = path.join(recordingDirectory, "Rec.exe");
-
+  let pythonOutput = ""
   
   console.log("calling Rec.exe");
   
   const recorder = spawn(pathToRecorder, [recordingDirectory+"\\"], {
-    stdio: ["inherit", "inherit", "inherit"],
+    stdio: ["pipe", "pipe", "pipe"],
     encoding: "utf-8",
   });
+
 
   recorder.on("error", (err: any) => {
     console.error("Recorder encountered an error");
@@ -196,13 +200,49 @@ export function recogniseAudio() {
   
   recorder.on("exit", (code: any, signal: any) => {
     console.log("Recorder Finished Recording")
+    console.log(pythonDir)
+    
+    setTimeout(()=>{
+      const audio_sample_path = path.join(recordedAudioPath, "myRecording.wav")
+      const pythonRecogniseScript = path.join(__dirname, "python/acrCloud/acrTest.py")
+      const pythonProcess = spawn("python", [pythonRecogniseScript, audio_sample_path], {
+        stdio: ["pipe", "pipe", "pipe"],
+        encoding: "utf-8",
+      });
+      // win?.webContents.send("found-song", "Fetching Results")
+      
+      pythonProcess.on("error", (err: any) => {
+        console.error("Recorder encountered an error");
+      })
+
+      pythonProcess.on("exit", (code:any, signal:any)=>{
+        console.log("Finished without errors")
+        console.log(pythonOutput)
+        win?.webContents.send("found-song", pythonOutput.toString())
+      })
+
+      if(pythonProcess.stdout){
+        pythonProcess.stdout.on('data', (data:any) => {
+          // console.log(`stdout: ${data}`);
+          // Append the data to the variable
+          pythonOutput += data.toString('utf-8').trim();
+          // console.log(pythonOutput)
+            
+          console.log("Sending 'found-song' signal");
+          
+          
+        });
+      }
+      
+
+    }, 500)
   });
   
-  return "something"
+  
 }
 
 //OLD APPROACH, I found a better solution using a wrapper over windows core audio API to capture direct speaker output. It's implemented above.
-//--Mic Audio NOT SYSTEM AUDIO---
+//---Mic Audio NOT SYSTEM AUDIO---
 //audio stream variable
 // let audioStream :any;
 // const filePath = path.join(__dirname, 'recorded_audio.wav');

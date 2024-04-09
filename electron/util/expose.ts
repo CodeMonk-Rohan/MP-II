@@ -18,7 +18,7 @@ function exposeToFrontEnd(functions:Array<Function>, window: BrowserWindow | nul
 
             try{
                 //special case for download playlist, as it needs two way communication unlike the other functions which work fine with one way comms
-                if(func == downloadPlaylist){
+                if(func == downloadPlaylist || func == recogniseAudio){
                     return func(...args, window);
                 }
                 // console.log("Set up main handles for: ",func.name)
