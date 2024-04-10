@@ -1,5 +1,6 @@
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\HipHop\11K - Seedhe Maut.m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\HipHop\‘नalla’ Freestyle (Visualizer) ｜ Seedhe Maut x DJ SA.m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\HipHop\Joint In The Booth - Seedhe Maut.m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\HipHop\DIVINE - Kohinoor (Official Music Video).m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\HipHop\D Rise - Dopeadelicz ｜ Official Music Video.m4a
+C:\Users\Admin\Desktop\MP-II\MP-II\dist-electron\data\HipHop\DIVINE - Kohinoor (Official Music Video).m4a
+C:\Users\Admin\Desktop\MP-II\MP-II\dist-electron\data\HipHop\DIVINE - Kaam 25 ｜ Sacred Games (Prod. by Phenom).m4a
+C:\Users\Admin\Desktop\MP-II\MP-II\dist-electron\data\HipHop\100 Million - DIVINE, KARAN AUJLA ｜ Official Music Video.m4a
+C:\Users\Admin\Desktop\MP-II\MP-II\dist-electron\data\HipHop\Wazir Patar - Pind Da Riwaaz (Official Video) ft. Azaad ｜ Keep It Gangsta.m4a
+C:\Users\Admin\Desktop\MP-II\MP-II\dist-electron\data\HipHop\RAFTAAR x PRABH DEEP - TRAP PRAA (Explicit Warning) ｜ PRAA ｜ Official Video.m4a
+C:\Users\Admin\Desktop\MP-II\MP-II\dist-electron\data\HipHop\D Rise - Dopeadelicz ｜ Official Music Video.m4a

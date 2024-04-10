@@ -86,11 +86,26 @@ async function downloadPlaylist(url, name, win2) {
   const dataToAdd = "\n" + name + "|sep|" + url;
   const downloadScript = pythonDir.replace(/\\/g, "/");
   try {
-    const data = await fs.appendFileSync(userFile, dataToAdd);
+    fs.readFileSync(userFile, "utf8", (err, fileContent) => {
+      if (err) {
+        return console.error(err);
+      }
+      if (!fileContent.includes(dataToAdd)) {
+        fs.appendFileSync(userFile, dataToAdd, (err2) => {
+          if (err2) {
+            console.error(err2);
+          } else {
+            console.log("Line written successfully!");
+          }
+        });
+      } else {
+        console.log("Line already exists!");
+      }
+    });
     console.log("calling process...");
     const pythonProcess = spawn("python", [downloadScript, name, url], {
       stdio: ["inherit", "inherit", "inherit"],
-      encoding: "utf-8"
+      encoding: "utf8"
     });
     console.log("calling script: ", downloadScript);
     pythonProcess.on("exit", (code, signal) => {
@@ -104,7 +119,6 @@ async function downloadPlaylist(url, name, win2) {
       console.log(win2, win2 == null ? void 0 : win2.webContents);
       win2 == null ? void 0 : win2.webContents.send(`Failed`);
     });
-    return data;
   } catch (err) {
     console.log(err);
   }
@@ -116,7 +130,7 @@ async function recogniseAudio(win2) {
   console.log("calling Rec.exe");
   const recorder = spawn(pathToRecorder, [recordingDirectory + "\\"], {
     stdio: ["pipe", "pipe", "pipe"],
-    encoding: "utf-8"
+    encoding: "utf8"
   });
   recorder.on("error", (err) => {
     console.error("Recorder encountered an error");
@@ -129,7 +143,7 @@ async function recogniseAudio(win2) {
       const pythonRecogniseScript = path.join(__dirname, "python/acrCloud/acrTest.py");
       const pythonProcess = spawn("python", [pythonRecogniseScript, audio_sample_path], {
         stdio: ["pipe", "pipe", "pipe"],
-        encoding: "utf-8"
+        encoding: "utf8"
       });
       pythonProcess.on("error", (err) => {
         console.error("Recorder encountered an error");
@@ -141,7 +155,7 @@ async function recogniseAudio(win2) {
       });
       if (pythonProcess.stdout) {
         pythonProcess.stdout.on("data", (data) => {
-          pythonOutput += data.toString("utf-8").trim();
+          pythonOutput += data.toString("utf8").trim();
           console.log("Sending 'found-song' signal");
         });
       }

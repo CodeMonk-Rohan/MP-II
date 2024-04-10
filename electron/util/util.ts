@@ -147,14 +147,33 @@ export async function downloadPlaylist(
   const downloadScript = pythonDir.replace(/\\/g, "/");
 
   try {
-    const data = await fs.appendFileSync(userFile, dataToAdd);
+
+    fs.readFileSync(userFile, 'utf8', (err:any, fileContent:string) => {
+      if (err) {
+          // Handle error reading the file
+          return console.error(err);
+      }
+
+      if (!fileContent.includes(dataToAdd)) {
+          fs.appendFileSync(userFile, dataToAdd, (err:any) => {
+              if (err) {
+                  console.error(err);
+              } else {
+                  console.log('Line written successfully!');
+              }
+          });
+      } else {
+          console.log('Line already exists!');
+      }
+  });
+    // const data = await fs.appendFileSync(userFile, dataToAdd);
 
     //Python process to be called here
     console.log("calling process...");
 
     const pythonProcess = spawn("python", [downloadScript, name, url], {
       stdio: ["inherit", "inherit", "inherit"],
-      encoding: "utf-8",
+      encoding: "utf8",
     });
 
     console.log("calling script: ", downloadScript);
@@ -172,7 +191,7 @@ export async function downloadPlaylist(
       win?.webContents.send(`Failed`);
     });
     //return?
-    return data;
+    
   } catch (err) {
     console.log(err);
   }
@@ -190,7 +209,7 @@ export async function recogniseAudio(win:BrowserWindow|null) {
   
   const recorder = spawn(pathToRecorder, [recordingDirectory+"\\"], {
     stdio: ["pipe", "pipe", "pipe"],
-    encoding: "utf-8",
+    encoding: "utf8",
   });
 
 
@@ -207,7 +226,7 @@ export async function recogniseAudio(win:BrowserWindow|null) {
       const pythonRecogniseScript = path.join(__dirname, "python/acrCloud/acrTest.py")
       const pythonProcess = spawn("python", [pythonRecogniseScript, audio_sample_path], {
         stdio: ["pipe", "pipe", "pipe"],
-        encoding: "utf-8",
+        encoding: "utf8",
       });
       // win?.webContents.send("found-song", "Fetching Results")
       
@@ -225,7 +244,7 @@ export async function recogniseAudio(win:BrowserWindow|null) {
         pythonProcess.stdout.on('data', (data:any) => {
           // console.log(`stdout: ${data}`);
           // Append the data to the variable
-          pythonOutput += data.toString('utf-8').trim();
+          pythonOutput += data.toString('utf8').trim();
           // console.log(pythonOutput)
             
           console.log("Sending 'found-song' signal");
@@ -238,7 +257,7 @@ export async function recogniseAudio(win:BrowserWindow|null) {
     }, 500)
   });
   
-  
+    
 }
 
 //OLD APPROACH, I found a better solution using a wrapper over windows core audio API to capture direct speaker output. It's implemented above.

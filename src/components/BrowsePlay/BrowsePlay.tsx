@@ -58,6 +58,10 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     }
 
     window.ipcRenderer.on("Downloaded", handleDownloaded)
+
+    return ()=>{
+      window.ipcRenderer.removeListener("Downloaded", handleDownloaded)
+    }
   })
 
 
@@ -65,8 +69,6 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     //search functionality
     setFilteredPlaylist(data)
 
-
-    //handle the signal sent by the main process when the download finishes
     
     
   }, [data])
@@ -102,6 +104,9 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
       toast.warn("Invalid Input")
       return
     }
+
+    //FOR SOME REASON THESE TWO ARE REVERSED, NEED TO LOOK INTO THIS
+    console.log(`PlaylistName: ${PlaylistName}, URL: ${URL}`)
     
     
     if(downloading == true){
@@ -120,7 +125,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
 
     //set the recieved signal to be false (This variable exists to prevent multiple toasts from being generated needlessly)
     setRecieved(false)
-    toast(`Pulling Changes for \n${PlaylistName}`)
+    toast(`Pulling Changes for \n${URL}`)
 
     try {
       const data = await window.ipcRenderer.invoke(
@@ -164,6 +169,10 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     const query = event.target.value.toLowerCase()
     filterPlaylist(query)
 
+  }
+
+  function handleRefreshPlaylist(Playlist:playlist){
+    downloadPlaylist(Playlist.name, Playlist.url)
   }
 
   return (
@@ -212,7 +221,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                             <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)}} ></img>
                           </div>
                             {item.name}
-                            <img className="refresh-icon" src={refresh}></img>
+                            <img className="refresh-icon" src={refresh} onClick={()=>handleRefreshPlaylist(item)}></img>
                       </div>
             
 
