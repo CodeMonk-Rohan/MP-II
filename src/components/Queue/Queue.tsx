@@ -23,24 +23,31 @@ export default function Queue() {
             data = JSON.parse(data)
 
             
-
+            if(data.status){
+                if(data.status.msg !== "Success"){
+                    setName("Could not find the song")
+                    setArtist("Try again?")
+                    setYtLink("")
+                }
+            }
             if(data.metadata){
                 if(data.status.msg === "Success"){
                     setName(data.metadata.music[0].title)
-                    setArtist(data.metadata.music[0].artists[0].name)
+                    setArtist("By "+data.metadata.music[0].artists[0].name)
 
                     if(data.metadata.music[0].external_metadata){
                         if(data.metadata.music[0].external_metadata.youtube){
                             setYtLink(`https://www.youtube.com/watch?v=${data.metadata.music[0].external_metadata.youtube.vid}`)
                         }else{
-                            //Handle else
+                            //Handle if theres no youtube link found
+                            setYtLink(`https://www.youtube.com/results?search_query=${data.metadata.music[0].title}`)
                         }
                     }else{
                         //This is the situation where no external yt_links were found
                     }   
                 }else{
                     // Request failed, could not identify
-                    setName("Wanna find what's playing right now?")
+                    setName("Could not identify the song")
                     setArtist("Click on the button to try again")
                     setYtLink("")
                 }
@@ -67,6 +74,11 @@ export default function Queue() {
             window.ipcRenderer.removeListener("found-song", handleFound)
         }
     }, [])
+
+
+    function openBrowser(url:string){
+        window.ipcRenderer.invoke(openBrowser.name, url)
+    }
 
     useEffect(()=>{
         console.log(songdata); 
@@ -114,9 +126,9 @@ export default function Queue() {
                             <p>{artistName}</p>
                         </div>
                     </div>
-                    {ytLink === "" ? <></> : <div className="link">
+                    {ytLink === "" ? <></> : <div className="link" onClick={()=>openBrowser(ytLink)}>
                         <img className="yt-icon" src={yticon}></img>
-                        <a href={ytLink}>Link</a>
+                        <div>{songName}</div>
                     </div>}
                 </div>
         </motion.div>

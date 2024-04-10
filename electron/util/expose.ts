@@ -2,7 +2,8 @@ import {
     fetchAllPlaylists,
     downloadPlaylist,
     fetchSongs,
-    recogniseAudio
+    recogniseAudio,
+    openBrowser
 } from "./util"
 
 import { BrowserWindow, ipcMain } from "electron";
@@ -35,7 +36,8 @@ export function setUpDirectoryManager(win: BrowserWindow | null){
         fetchAllPlaylists,
         downloadPlaylist,
         fetchSongs,
-        recogniseAudio
+        recogniseAudio,
+        openBrowser
     ]
     // console.log(functions)
     

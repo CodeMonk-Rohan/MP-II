@@ -215,12 +215,8 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
 
   return (
 
-    <motion.div  className="custom-player" initial={{ opacity: 0, scale: 0.5 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.8,
-      delay: 0,
-      ease: [0, 0.71, 0.2, 1.01]}}>
+    <div  className="custom-player">
+    
           {/* PLAYER */}
         <div className="player-side">
 
@@ -287,7 +283,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
 
         </motion.div>
 
-    </motion.div>
+    </div>
 
 
      

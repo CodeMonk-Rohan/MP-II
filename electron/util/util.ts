@@ -1,13 +1,10 @@
-import { BrowserWindow, ipcMain, protocol, net } from "electron";
+import { BrowserWindow, ipcMain, protocol, net, shell } from "electron";
 import { globalShortcut } from "electron";
 const fs = require("fs");
 const path = require("path");
-const { spawn, spawnSync} = require("child_process");
-const record = require("node-record-lpcm16");
-const acrcloud = require("acrcloud");
+const { spawn } = require("child_process");
 
-import { config } from "./config";
-import { access } from "original-fs";
+
 
 //Setting up relative paths, so the app is independent of its position in the file tree
 const dataFolderPath = path.join(__dirname, "data");
@@ -258,6 +255,10 @@ export async function recogniseAudio(win:BrowserWindow|null) {
   });
   
     
+}
+
+export function openBrowser(url:string){
+  shell.openExternal(url)
 }
 
 //OLD APPROACH, I found a better solution using a wrapper over windows core audio API to capture direct speaker output. It's implemented above.

@@ -3,9 +3,7 @@ const electron = require("electron");
 const path$1 = require("node:path");
 const fs = require("fs");
 const path = require("path");
-const { spawn, spawnSync } = require("child_process");
-require("node-record-lpcm16");
-require("acrcloud");
+const { spawn } = require("child_process");
 const dataFolderPath = path.join(__dirname, "data");
 const userFile = path.join(__dirname, "userData.txt");
 const pythonDir = path.join(__dirname, "python/utility2.py");
@@ -162,6 +160,9 @@ async function recogniseAudio(win2) {
     }, 500);
   });
 }
+function openBrowser(url) {
+  electron.shell.openExternal(url);
+}
 function exposeToFrontEnd(functions, window) {
   functions.forEach((func) => {
     electron.ipcMain.handle(func.name, async (event, ...args) => {
@@ -181,7 +182,8 @@ function setUpDirectoryManager(win2) {
     fetchAllPlaylists,
     downloadPlaylist,
     fetchSongs,
-    recogniseAudio
+    recogniseAudio,
+    openBrowser
   ];
   exposeToFrontEnd(functions, win2 = win2);
 }
