@@ -35,6 +35,7 @@ def downloadPlaylist(name: str, url: str):
             }
         ],
         'logger': customLogger.customLogger(),
+        'embedthumbnail': True,
 
         # progress hooks only take a function, and I needed to inject playlist name into it, hence the lambda function
         'progress_hooks': [lambda d, name=name: custom_hook(d, name)],
@@ -51,7 +52,7 @@ def downloadPlaylist(name: str, url: str):
         pprint.pprint(output["playlist_count"])
         pprint.pprint(output["title"])
 
-
+# downloadPlaylist("embeddingTesting-2", url=URL)
 if __name__ == "__main__":
     name = sys.argv[1]
     url = sys.argv[2]

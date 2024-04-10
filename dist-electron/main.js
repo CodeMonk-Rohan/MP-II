@@ -84,22 +84,15 @@ async function downloadPlaylist(url, name, win2) {
   const dataToAdd = "\n" + name + "|sep|" + url;
   const downloadScript = pythonDir.replace(/\\/g, "/");
   try {
-    fs.readFileSync(userFile, "utf8", (err, fileContent) => {
-      if (err) {
-        return console.error(err);
-      }
-      if (!fileContent.includes(dataToAdd)) {
-        fs.appendFileSync(userFile, dataToAdd, (err2) => {
-          if (err2) {
-            console.error(err2);
-          } else {
-            console.log("Line written successfully!");
-          }
-        });
-      } else {
-        console.log("Line already exists!");
-      }
-    });
+    console.log("Reading userdata attempt");
+    const fileContent = await fs.promises.readFile(userFile, "utf8");
+    const alreadyExists = fileContent.includes(dataToAdd);
+    if (alreadyExists) {
+      console.log("Shit ain't new fam");
+    } else {
+      await fs.promises.appendFile(userFile, dataToAdd);
+      console.log("writing new shit");
+    }
     console.log("calling process...");
     const pythonProcess = spawn("python", [downloadScript, name, url], {
       stdio: ["inherit", "inherit", "inherit"],

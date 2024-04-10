@@ -144,26 +144,19 @@ export async function downloadPlaylist(
   const downloadScript = pythonDir.replace(/\\/g, "/");
 
   try {
-
-    fs.readFileSync(userFile, 'utf8', (err:any, fileContent:string) => {
-      if (err) {
-          // Handle error reading the file
-          return console.error(err);
-      }
-
-      if (!fileContent.includes(dataToAdd)) {
-          fs.appendFileSync(userFile, dataToAdd, (err:any) => {
-              if (err) {
-                  console.error(err);
-              } else {
-                  console.log('Line written successfully!');
-              }
-          });
-      } else {
-          console.log('Line already exists!');
-      }
-  });
-    // const data = await fs.appendFileSync(userFile, dataToAdd);
+    console.log("Reading userdata attempt");
+    
+    const fileContent = await fs.promises.readFile(userFile, 'utf8');
+    const alreadyExists = fileContent.includes(dataToAdd)
+    if(alreadyExists){
+      console.log("Shit ain't new fam");
+    }else{
+      await fs.promises.appendFile(userFile, dataToAdd);
+      console.log("writing new shit");
+      
+    }
+    //const data = await fs.appendFileSync(userFile, dataToAdd);
+    
 
     //Python process to be called here
     console.log("calling process...");
@@ -257,8 +250,14 @@ export async function recogniseAudio(win:BrowserWindow|null) {
     
 }
 
+//Opens the default browser with the url
 export function openBrowser(url:string){
   shell.openExternal(url)
+}
+
+//Limit max listerner
+export function limitListeners(){
+  ipcMain.setMaxListeners(1)
 }
 
 //OLD APPROACH, I found a better solution using a wrapper over windows core audio API to capture direct speaker output. It's implemented above.

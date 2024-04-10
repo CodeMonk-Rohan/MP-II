@@ -51,18 +51,18 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
         console.log(count);
         
         setDownloading(false);
-        // toast("Playlist Updated");
+        toast("Playlist Updated", {autoClose:1000});
       
         fetchAllPlaylists();
       }
     }
 
     window.ipcRenderer.on("Downloaded", handleDownloaded)
-
+    
     return ()=>{
       window.ipcRenderer.removeListener("Downloaded", handleDownloaded)
     }
-  })
+  }, [])
 
 
   useEffect(()=>{
@@ -192,30 +192,24 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
               <img className="refresh-global" src={refresh} onClick={fetchAllPlaylists}></img>
           </div>
 
-        </motion.div>
+    </motion.div>
         
     <div className="main-div">
        
         
-        <motion.ul className="add-ul" initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0,
-              ease: [0, 0.71, 0.2, 1.01]}}
-              ref={ref}>
+        <ul className="add-ul">
                 {/* Download Playlist Card */}
-                <motion.li className="add-li" onPointerDownCapture={(e) => e.stopPropagation()}>
+                <li className="add-li" onPointerDownCapture={(e) => e.stopPropagation()}>
                     <button className="add-butt" onClick={()=>{downloadPlaylist(formData.name, formData.url)}}><img className="add-button"src={plus}></img></button>
                     <div className="add-data">
                     <input className="txt-box" type="text" placeholder="Name" value={formData.name} onChange={handleInputChange} name="name"></input>
                     <input className="txt-box" type="text" placeholder="URL" value={formData.url} onChange={handleInputChange} name="url"></input>
                     </div>
-                </motion.li>
+                </li>
 
                 {/* User Playlist Cards */}
                 {filteredPlaylist.map((item, index)=>(
-                    <motion.li className="item-cards" key={index}> 
+                    <li className="item-cards" key={index}> 
                       <div className="item-div">
                           <div >
                             <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)}} ></img>
@@ -225,13 +219,13 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
                       </div>
             
 
-                    </motion.li>
+                    </li>
 
                 ))}
 
                 
                 
-        </motion.ul>
+        </ul>
         
       </div>             
     </>

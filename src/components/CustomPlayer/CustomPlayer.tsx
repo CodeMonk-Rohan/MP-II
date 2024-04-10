@@ -222,9 +222,9 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
 
           <p className="song-name">{currentTrack.name.slice(0, 74 )} ...</p>
    
-          <motion.div className="seekbar-div">
+          <div className="seekbar-div">
             <input  className="seekbar" onPointerDownCapture={(e) => e.stopPropagation()} type="range" min={0} max={duration} value={currentTime} onChange={handleSeek}></input>
-          </motion.div>
+          </div>
 
           <div className="timestamp">
             <div className="current-time"> {convertToHumanReadable(currentTime)}</div>
@@ -262,7 +262,7 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
         </div>
               
         {/* QUEUE */}
-        <motion.div className="queue-card">
+        <div className="queue-card">
             
             <div className="q-card-search">
               <input className="q-searchbox" type="text" onChange={handleSearchInput} placeholder={`Search Playlist`} onPointerDownCapture={(e) => e.stopPropagation()}></input>
@@ -274,14 +274,14 @@ export default function CustomPlayer({audioRef, currentPlaylist}:customPlayer) {
 
                     {filteredSongs.map((song, index)=>(
                       // Currently I am making it so that when you click on the song block, you will start playing that song, let me know if you need to switch this to a specfic button on it instead
-                      <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div onClick={()=>changeSong(song)}> {song.name.slice(0, 30)}... </div></button>
+                      <button key={index} className="q-item-names"><img src={qicon} className="queue-icon"></img>    <div onClick={()=>changeSong(song)}> {(song.name.slice(0, -5)).slice(0, 30)}... </div></button>
 
                     ))}
                               
               </div>
             </div>
 
-        </motion.div>
+        </div>
 
     </div>
 
