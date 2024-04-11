@@ -156,6 +156,9 @@ async function recogniseAudio(win2) {
 function openBrowser(url) {
   electron.shell.openExternal(url);
 }
+function limitListeners() {
+  electron.ipcMain.setMaxListeners(1);
+}
 function exposeToFrontEnd(functions, window) {
   functions.forEach((func) => {
     electron.ipcMain.handle(func.name, async (event, ...args) => {
@@ -225,6 +228,7 @@ function startApp() {
   createDataFolder();
   createWindow();
   setUpDirectoryManager(win);
+  limitListeners();
   win == null ? void 0 : win.webContents.openDevTools({ mode: "detach" });
   setUpShortcut("Alt+M", win);
   setUpMouseListeners(win);

@@ -3,7 +3,7 @@ import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
 import { createDataFolder, setUpMouseListeners, setUpShortcut } from './util/util'
 import { setUpDirectoryManager } from './util/expose'
-
+import { limitListeners } from './util/util'
 // The built directory structure
 //
 // ├─┬─┬ dist
@@ -86,7 +86,7 @@ function startApp(){
   //functions requiring window must be called after creating the damn window (who would have thought?)
   setUpDirectoryManager(win)
   
-  // limitListeners()
+  limitListeners()
 
   //Opening dev tools
   win?.webContents.openDevTools({mode:"detach"})

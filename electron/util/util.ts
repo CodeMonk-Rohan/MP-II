@@ -128,7 +128,7 @@ export function fetchSongs(playlist: string) {
 export async function downloadPlaylist(
   url: string,
   name: string,
-  win: BrowserWindow | null
+  win: BrowserWindow | null,
 ) {
   if (url.length == 0 || name.length == 0) {
     console.log("Empty fields, stopping creation of creation of subprocess");

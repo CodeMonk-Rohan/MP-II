@@ -37,40 +37,39 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   //variable to prevent multiple toasts from being generated (main process sends a lot of signals, can't do anything about that)
   const [recievedSignal, setRecieved] = useState(false)
   useEffect(()=>{
-
+    console.log("LISTENER FOR DOWNLOADED WAS ADDED")
     let count = 0
     function handleDownloaded(event:Electron.Event, arg:any){
-      if(recievedSignal == false){
-        
-      
+      setTimeout(()=>{
 
-        console.log("Downloaded signal received:", event);
-        setRecieved(true)
-        console.log(`Recieved: ${recievedSignal}`);
-        count = count + 1
-        console.log(count);
+        if(recievedSignal === false){
+          // console.log("Downloaded signal received:", event);
+          setRecieved(true)
+          console.log(`Recieved: ${recievedSignal}`);
+          count = count + 1
+          console.log(count);
+          
+          setDownloading(false);
+          toast("Playlist Updated", {autoClose:1000});
         
-        setDownloading(false);
-        toast("Playlist Updated", {autoClose:1000});
-      
-        fetchAllPlaylists();
-      }
+          fetchAllPlaylists();
+        }
+
+      }, 500)
     }
 
     window.ipcRenderer.on("Downloaded", handleDownloaded)
     
     return ()=>{
+      console.log("LISTENER FOR DOWNLOADED WAS REMOVED")
       window.ipcRenderer.removeListener("Downloaded", handleDownloaded)
     }
   }, [])
 
 
+  //search functionality
   useEffect(()=>{
-    //search functionality
     setFilteredPlaylist(data)
-
-    
-    
   }, [data])
 
 
@@ -99,7 +98,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   const { scrollXProgress } = useScroll({ container: ref });
   // console.log(data)
 
-  async function downloadPlaylist(URL: string, PlaylistName: string) {
+  async function downloadPlaylist(URL: string, PlaylistName: string, bypassLimit:boolean=false) {
     if(URL.length === 0 || PlaylistName.length === 0){
       toast.warn("Invalid Input")
       return
@@ -109,9 +108,11 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     console.log(`PlaylistName: ${PlaylistName}, URL: ${URL}`)
     
     
-    if(downloading == true){
-      toast.warn("Busy")
-      return
+    if(bypassLimit === false){
+      if(downloading === true){
+        toast.warn("Busy")
+        return
+      }
     }
 
     //add a form validation step here to save on accidental calls to youtube
@@ -172,7 +173,7 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   }
 
   function handleRefreshPlaylist(Playlist:playlist){
-    downloadPlaylist(Playlist.name, Playlist.url)
+    downloadPlaylist(Playlist.name, Playlist.url, true)
   }
 
   return (
