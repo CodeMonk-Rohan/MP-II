@@ -18,23 +18,23 @@
   flex: 2;
   width: 50%;
   height: 95%;
-  background-color: rgba(255, 255, 255, 0.747);
+  /* background-color: rgba(255, 255, 255, 0.747); */
   /* box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2); */
   border-radius: 20px 20px 20px 20px;
   overflow: hidden;
-  transition: 0.3s ease;
-
-  background: linear-gradient(135deg, rgba(150, 150, 150, 0.39), rgba(204, 204, 204, 0.253));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(10px);
-  border:1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: 0.3s ;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.267), rgba(255, 255, 255, 0.247));
+  /* background: linear-gradient(135deg, rgba(146, 146, 146, 0.753), rgba(129, 129, 129, 0.877)); */
+  /* backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(10px); */
+  border:1px solid rgba(138, 138, 138, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.158);
 
 }
-.player-side:hover,.queue-card:hover,.q-item-names:hover{
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    scale: 1.02;
-}
+/* .player-side:hover,.queue-card:hover,.q-item-names:hover{
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.192);
+    /* scale: 1.02; }*/
+
 .q-item-names:active{
   scale: 0.9;
 }
@@ -63,6 +63,7 @@
   margin-right: 4%;
   border-radius: 20px;
   overflow-y: scroll;
+  scroll-behavior: smooth;
   width: 99%;
   height: 85%;
   margin-bottom: 2%;
@@ -93,10 +94,11 @@
   font-family: "SF Pro Text Semibold";
   font-weight: bold;
   flex-direction: row;
-  background-color:rgba(255, 255, 255, 0.3);
+  background-color:rgba(255, 255, 255, 0.644);
   padding: 2%;
   align-items: center;
-  transition: 0.3s ease;
+  transition: 0.2s ;
+  cursor: pointer;
 }
 
 .player-side{
@@ -106,14 +108,14 @@
   margin-bottom: 2%;
   margin-top: 0%;
   margin-right: 2%;
-  background-color: rgb(0, 0, 0);
+  /* background-color: rgb(0, 0, 0); */
   border-radius: 20px;
   flex: 3;
-  transition: 0.3s ease;
-  background: linear-gradient(135deg, rgba(150, 150, 150, 0.39), rgba(204, 204, 204, 0.253));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(10px);
-  border:1px solid rgba(255, 255, 255, 0.18);
+  transition: 0.3s ;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.247));
+  /* backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(10px); */
+  border:1px solid rgba(138, 138, 138, 0.18);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 .seekbar-div{
@@ -131,18 +133,18 @@
   font-family: "SF Pro Text Semibold";
   font-size: large;
   margin-left: 6%;
-  min-height: 14%;
-  max-height: 14.5%;
+  min-height: 12.5%;
   padding-bottom: 0.7em;
+  text-shadow: 2px 2px 6px black;
 }
 
 
 .seekbar{
     -webkit-appearance:none;
     width:90%;
-    height:43%;
+    height:42%;
     border-radius: 10px;
-    background:#ffffff48;
+    background:#ffffff6b;
     outline:none;
     overflow: hidden;
     margin-left: 10px;
@@ -167,7 +169,6 @@
 .seekbar::-webkit-slider-thumb {
     -webkit-appearance:none;
     width: 4%;
-    height:8px;
     background:#ffffff;
     box-shadow:-350px 0px 0px 340px #ffffff;
     cursor:pointer;
@@ -179,22 +180,25 @@
     font-family: sans-serif;
     color: #ffffff;
     margin-left: 1.8%;
+    text-shadow: 2px 2px 6px black;
 }
 .duration-time{
     font-size: small;
     font-family: sans-serif;
     color: #ffffff;
+    text-shadow: 2px 2px 6px black;
 }
 
 .playpause-button{
     height: 34px; 
     margin-left: 10%;
     margin-right: 9%;
-    overflow: hidden;  
+    overflow: hidden; 
 }
 .prev-next-buttons{
     background: none;
     border: none;
+    cursor: pointer;
 }
 .next-butt, .prev-butt{
     height: 35px;
@@ -211,7 +215,7 @@
   width:60%;
   height:50%;
   border-radius:15px;
-  background:#ffffff70;
+  background:#e2e2e269;
   outline:none;
   overflow:hidden;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
@@ -244,7 +248,7 @@
     padding: 1%;
     border-radius: 15px;
     border: 1px  rgba(0, 0, 0, 0.274);
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.507);
     transition: box-shadow 0.35s;
     outline: none;
   }

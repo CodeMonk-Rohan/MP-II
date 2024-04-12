@@ -37,20 +37,22 @@ body {
   margin: 0 ;
   overflow-x: scroll;
   border-radius: 25px;
+
 }
+
 .add-ul::-webkit-scrollbar{
-  display: flex;
   /* border: 2px solid; */
   height: 10px;
-  width: 12px;
   background: rgba(255, 255, 255, 0.158);
   border-radius: 1ex;
+  scroll-behavior: smooth;
 }
 
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(252, 224, 224, 0.733);
+  background: rgba(255, 255, 255, 0.678);
   border-radius: 1ex;
+  scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar-corner {
@@ -58,7 +60,7 @@ body {
 }
 
 .add-li,.item-cards {
-  transition: 0.3s ease;
+  transition: 0.3s;
   display: flex;
   flex-direction: column;
   flex: 0 0 25%;
@@ -66,19 +68,18 @@ body {
   background: var(--accent);
   margin: 0 10% 0 0;
   border-radius: 15px;
-  opacity: 1;
   box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
 }
 
 .add-li,.item-cards{
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 1));
+  background: linear-gradient(135deg, rgba(228, 228, 228, 0.623), rgba(214, 214, 214, 0.452));
+  /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 1));
   /* backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(10px); */
-  border:1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.192);
+  /* border:1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.192); */ 
 }
 .add-li:hover,.item-cards:hover{
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   scale: 1.05;
 }
 .add-data{
@@ -107,6 +108,7 @@ body {
   border-radius: 25px;
 } */
 .add-li{
+  color: white;
   margin-top: 4%;
   padding-top: 4%;
   border-radius: 15px;
@@ -124,7 +126,6 @@ body {
   margin-bottom: 2%;
   border: 1px  rgba(0, 0, 0, 0.274);
   outline: none;
-  font-family: Arial;
   width: 60%;
   margin-left: 18%;
   background-color: rgba(0, 78, 247, 0.137);
@@ -141,10 +142,11 @@ body {
 }
 
 .item-cards{
-  color: black;
+  color: rgb(255, 255, 255);
   margin-top: 4%;
   height: 80%;
   font-weight: bold;
+  text-shadow: 1px 1px 4px black;
 }
 
 .item-div{
@@ -194,11 +196,7 @@ body {
   align-items: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.685), rgba(255, 255, 255, 0.582));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(10px);
-  border:1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  background: linear-gradient(135deg, rgba(228, 228, 228, 0.959), rgba(214, 214, 214, 0.767));
 
 }
 .box:hover input{
@@ -210,7 +208,7 @@ body {
   border: none;
   font-size: medium;
   font-weight: bold;
-  transition: 0.8s;
+  transition: 0.6s;
   background: transparent;
   margin-bottom: 5px;
 }
