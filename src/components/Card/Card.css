@@ -9,14 +9,12 @@
     margin-top: 0.5vh;
     margin-bottom: 0.5vh;
     box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-    background-image: url(../../assets/wallpapersden.com_abstract-shapes-2021-minimalist_1921x1081.jpg);
+    background-image: url(../../assets/wallpapersden.com_surreal-sunset-minimal-4k_2880x1800.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
     background-color: var(--quaternary-color);
     overflow: hidden;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(10px);
 
     
     /* border: 1px solid red; */
