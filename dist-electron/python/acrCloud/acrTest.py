@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-This is a demo program which implements ACRCloud Identify Protocol V1 with the third party library "requests".
-We recomment you implement your own app with "requests" too.
-You can install this python library by:
-1) sudo easy_install requests 
-2) sudo pip install requests
-"""
+
 from config import api_data
 
 import base64

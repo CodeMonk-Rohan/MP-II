@@ -118,7 +118,13 @@ body {
   height: 45px;
   cursor: pointer;
   transition: 0.2s ease;
+}
 
+.add-button-locked{
+  height: 45px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  opacity: 0.4;
 }
 .txt-box{
   margin-top: 10%;

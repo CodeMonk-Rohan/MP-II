@@ -154,7 +154,9 @@ async function recogniseAudio(win2) {
       });
       if (pythonProcess.stdout) {
         pythonProcess.stdout.on("data", (data) => {
-          pythonOutput += data.toString("utf8").trim();
+          console.log("data:", data);
+          pythonOutput = data.toString("utf8").trim();
+          console.log(pythonOutput);
           console.log("Sending 'found-song' signal");
         });
       }

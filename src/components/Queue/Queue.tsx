@@ -18,13 +18,24 @@ export default function Queue() {
     useEffect(()=>{
 
         async function handleFound(event:any, data:any){
-            console.log("found - s o n g ")
+            console.log("found potential match")
             data = data.slice(2,-3)
             console.log(data)
             // data = decodeURIComponent(data)
             // data = data.replace(/\\/g, '/');
-            data = Buffer.from(data, 'utf-8').toString()
-            data = JSON.parse(data)
+            // data = Buffer.from(data, 'utf-8').toString()
+            data = decodeURI(data)
+            
+            try{
+                data = JSON.parse(data)
+            }catch(err){
+                //Treating parsing failure as the same as not finding a song for now
+                setName("Could not find the song")
+                setArtist("Try again?")
+                setYtLink("")
+                console.log(err)
+            }
+            
 
             
             if(data.status){

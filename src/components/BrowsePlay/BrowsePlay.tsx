@@ -1,22 +1,20 @@
 import "./BrowsePlay.css";
-import '../SearchBar/SearchBar.css'
+import "../SearchBar/SearchBar.css";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
-import refresh from "../../assets/refresh.svg"
-import itemicon from "../../assets/item-card.svg"
+import refresh from "../../assets/refresh.svg";
+import itemicon from "../../assets/item-card.svg";
 import plus from "../../assets/add1.svg";
 import { song } from "../../App";
 import { FiSearch } from "react-icons/fi";
 
-
 import { toast } from "react-toastify";
-
 
 type data = {
   data: playlist[];
   changeScreen: React.Dispatch<React.SetStateAction<string>>;
   changePlaylist: React.Dispatch<React.SetStateAction<song[]>>;
-  setPlaylistData: React.Dispatch<React.SetStateAction<playlist[]>>
+  setPlaylistData: React.Dispatch<React.SetStateAction<playlist[]>>;
 };
 
 export type playlist = {
@@ -24,67 +22,63 @@ export type playlist = {
   url: string;
 };
 
-export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlaylistData}: data) {
+export default function BrowsePlay({
+  data,
+  changeScreen,
+  changePlaylist,
+  setPlaylistData,
+}: data) {
   const ref = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
     url: "",
   });
-  
-  const [filteredPlaylist, setFilteredPlaylist] = useState(data)
-  const [downloading, setDownloading] = useState(false)
+
+  const [filteredPlaylist, setFilteredPlaylist] = useState(data);
+  const [downloading, setDownloading] = useState(false);
 
   //variable to prevent multiple toasts from being generated (main process sends a lot of signals, can't do anything about that)
-  const [recievedSignal, setRecieved] = useState(false)
-  useEffect(()=>{
-    console.log("LISTENER FOR DOWNLOADED WAS ADDED")
-    let count = 0
-    function handleDownloaded(event:Electron.Event, arg:any){
-      setTimeout(()=>{
-
-        if(recievedSignal === false){
+  const [recievedSignal, setRecieved] = useState(false);
+  useEffect(() => {
+    console.log("LISTENER FOR DOWNLOADED WAS ADDED");
+    let count = 0;
+    function handleDownloaded(event: Electron.Event, arg: any) {
+      setTimeout(() => {
+        if (recievedSignal === false) {
           // console.log("Downloaded signal received:", event);
-          setRecieved(true)
+          setRecieved(true);
           console.log(`Recieved: ${recievedSignal}`);
-          count = count + 1
+          count = count + 1;
           console.log(count);
-          
+
           setDownloading(false);
-          toast("Playlist Updated", {autoClose:1000});
-        
+          toast("Playlist Updated", { autoClose: 1000 });
+
           fetchAllPlaylists();
         }
-
-      }, 500)
+      }, 500);
     }
 
-    window.ipcRenderer.on("Downloaded", handleDownloaded)
-    
-    return ()=>{
-      console.log("LISTENER FOR DOWNLOADED WAS REMOVED")
-      window.ipcRenderer.removeListener("Downloaded", handleDownloaded)
-    }
-  }, [])
+    window.ipcRenderer.on("Downloaded", handleDownloaded);
 
+    return () => {
+      console.log("LISTENER FOR DOWNLOADED WAS REMOVED");
+      window.ipcRenderer.removeListener("Downloaded", handleDownloaded);
+    };
+  }, []);
 
   //search functionality
-  useEffect(()=>{
-    setFilteredPlaylist(data)
-  }, [data])
+  useEffect(() => {
+    setFilteredPlaylist(data);
+  }, [data]);
 
-
-  // This function is to be called when the python process sends a signal with a response code from the main process  
+  // This function is to be called when the python process sends a signal with a response code from the main process
   async function fetchAllPlaylists() {
-    const data = await window.ipcRenderer.invoke("fetchAllPlaylists") 
-    //Read userdata file and load every playlist written into it.   
-    await setPlaylistData(data)
-    console.log("Playlists: ",data);
-
+    const data = await window.ipcRenderer.invoke("fetchAllPlaylists");
+    //Read userdata file and load every playlist written into it.
+    await setPlaylistData(data);
+    console.log("Playlists: ", data);
   }
-
-  
-
-
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -98,20 +92,32 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
   const { scrollXProgress } = useScroll({ container: ref });
   // console.log(data)
 
-  async function downloadPlaylist(URL: string, PlaylistName: string, bypassLimit:boolean=false) {
-    if(URL.length === 0 || PlaylistName.length === 0){
-      toast.warn("Invalid Input")
-      return
+  async function downloadPlaylist(
+    URL: string,
+    PlaylistName: string,
+    bypassLimit: boolean = false
+  ) {
+    //Accidental click, handling empty fields
+    if (URL.length === 0 || PlaylistName.length === 0) {
+      toast.warn("Invalid Input");
+      return;
     }
 
-    //FOR SOME REASON THESE TWO ARE REVERSED, NEED TO LOOK INTO THIS
-    console.log(`PlaylistName: ${PlaylistName}, URL: ${URL}`)
-    
-    
-    if(bypassLimit === false){
-      if(downloading === true){
-        toast.warn("Busy")
-        return
+    //FOR SOME REASON THESE TWO ARE REVERSED, NEED TO LOOK INTO THIS ⚠
+    console.log(`PlaylistName: ${PlaylistName}, URL: ${URL}`);
+
+    const regex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|live\/|v\/)?)([\w\-]+)(\S+)?$/
+    if(!regex.test(PlaylistName)){
+
+      toast.warn("Invalid URL")
+      return;
+    }
+
+    //Prevent more than one download request at a time
+    if (bypassLimit === false) {
+      if (downloading === true) {
+        toast.warn("Already Downloading");
+        return;
       }
     }
 
@@ -119,14 +125,14 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     //---TODO---
 
     //Reset the name and url to be empty
-    setFormData({name:"", url:""})
+    setFormData({ name: "", url: "" });
 
     //disabled the download button, and notify the user that the download request is underway
-    setDownloading(true)
+    setDownloading(true);
 
     //set the recieved signal to be false (This variable exists to prevent multiple toasts from being generated needlessly)
-    setRecieved(false)
-    toast(`Pulling Changes for \n${URL}`)
+    setRecieved(false);
+    toast(`Pulling Changes for \n${URL}`);
 
     try {
       const data = await window.ipcRenderer.invoke(
@@ -143,87 +149,115 @@ export default function BrowsePlay({ data, changeScreen, changePlaylist, setPlay
     }
   }
 
-
-
-
-  async function fetchSongs(playlist:string) {
-    const data = await window.ipcRenderer.invoke(fetchSongs.name, playlist)
-    console.log(data)
-    return data
+  async function fetchSongs(playlist: string) {
+    const data = await window.ipcRenderer.invoke(fetchSongs.name, playlist);
+    console.log(data);
+    return data;
   }
 
-  async function setPlaylist(name:any) {
-    
-    const data = await fetchSongs(name)
-    changePlaylist(data)
-    changeScreen("Player")
+  async function setPlaylist(name: any) {
+    const data = await fetchSongs(name);
+    changePlaylist(data);
+    changeScreen("Player");
   }
 
-  function filterPlaylist(query:string){
-    const filtered = data.filter((playlist)=>
+  function filterPlaylist(query: string) {
+    const filtered = data.filter((playlist) =>
       playlist.name.toLowerCase().includes(query)
-    )
-    setFilteredPlaylist(filtered)
+    );
+    setFilteredPlaylist(filtered);
   }
 
-  function handleSearchInput(event: React.ChangeEvent<HTMLInputElement>){
-    const query = event.target.value.toLowerCase()
-    filterPlaylist(query)
-
+  function handleSearchInput(event: React.ChangeEvent<HTMLInputElement>) {
+    const query = event.target.value.toLowerCase();
+    filterPlaylist(query);
   }
 
-  function handleRefreshPlaylist(Playlist:playlist){
-    downloadPlaylist(Playlist.name, Playlist.url, true)
+  function handleRefreshPlaylist(Playlist: playlist) {
+    downloadPlaylist(Playlist.name, Playlist.url, true);
   }
 
   return (
     <>
-     <div className="box">
+      <div className="box">
+        {/* Search Bar */}
+        <div className="search-pill">
+          <input
+            className="browse-search"
+            type="text"
+            placeholder="Search"
+            onChange={handleSearchInput}
+            onPointerDownCapture={(e) => e.stopPropagation()}
+          ></input>
+          <FiSearch className="search-icon" />
+          {/* REFRESH BUTTON */}
+          <img
+            className="refresh-global"
+            src={refresh}
+            onClick={fetchAllPlaylists}
+          ></img>
+        </div>
+      </div>
 
-          {/* Search Bar */}
-          <div className="search-pill">
-            <input className="browse-search" type="text" placeholder="Search" onChange={handleSearchInput} onPointerDownCapture={(e) => e.stopPropagation()}></input>
-            <FiSearch className='search-icon'/>
-            {/* REFRESH BUTTON */}
-              <img className="refresh-global" src={refresh} onClick={fetchAllPlaylists}></img>
-          </div>
-
-    </div>
-        
-    <div className="main-div">
-       
-        
+      <div className="main-div">
         <ul className="add-ul">
-                {/* Download Playlist Card */}
-                <li className="add-li" onPointerDownCapture={(e) => e.stopPropagation()}>
-                    <button className="add-butt" onClick={()=>{downloadPlaylist(formData.name, formData.url)}}><img className="add-button"src={plus}></img></button>
-                    <div className="add-data">
-                    <input className="txt-box" type="text" placeholder="Name" value={formData.name} onChange={handleInputChange} name="name"></input>
-                    <input className="txt-box" type="text" placeholder="URL" value={formData.url} onChange={handleInputChange} name="url"></input>
-                    </div>
-                </li>
+          {/* Download Playlist Card */}
+          <li
+            className="add-li"
+            onPointerDownCapture={(e) => e.stopPropagation()}
+          >
+            <button
+              className="add-butt"
+              onClick={() => {
+                downloadPlaylist(formData.name, formData.url);
+              }}
+            >
+              <img className={downloading ? "add-button-locked" : "add-button"} src={plus}></img>
+            </button>
+            <div className="add-data">
+              <input
+                className="txt-box"
+                type="text"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleInputChange}
+                name="name"
+              ></input>
+              <input
+                className="txt-box"
+                type="text"
+                placeholder="URL"
+                value={formData.url}
+                onChange={handleInputChange}
+                name="url"
+              ></input>
+            </div>
+          </li>
 
-                {/* User Playlist Cards */}
-                {filteredPlaylist.map((item, index)=>(
-                    <li className="item-cards" key={index}> 
-                      <div className="item-div">
-                          <div >
-                            <img className="item-icon" src={itemicon} onClick={()=>{setPlaylist(item.name)}} ></img>
-                          </div>
-                            {item.name}
-                            <img className="refresh-icon" src={refresh} onClick={()=>handleRefreshPlaylist(item)}></img>
-                      </div>
-            
-
-                    </li>
-
-                ))}
-
-                
-                
+          {/* User Playlist Cards */}
+          {filteredPlaylist.map((item, index) => (
+            <li className="item-cards" key={index}>
+              <div className="item-div">
+                <div>
+                  <img
+                    className="item-icon"
+                    src={itemicon}
+                    onClick={() => {
+                      setPlaylist(item.name);
+                    }}
+                  ></img>
+                </div>
+                {item.name}
+                <img
+                  className="refresh-icon"
+                  src={refresh}
+                  onClick={() => handleRefreshPlaylist(item)}
+                ></img>
+              </div>
+            </li>
+          ))}
         </ul>
-        
-      </div>             
+      </div>
     </>
   );
 }

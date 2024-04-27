@@ -246,9 +246,11 @@ export async function recogniseAudio(win:BrowserWindow|null) {
         pythonProcess.stdout.on('data', (data:any) => {
           // console.log(`stdout: ${data}`);
           // Append the data to the variable
-          pythonOutput += data.toString('utf8').trim();
+          console.log("data:", data)
+          
+          pythonOutput = data.toString('utf8').trim();
           // console.log(pythonOutput)
-            
+          console.log(pythonOutput)
           console.log("Sending 'found-song' signal");
           
           
