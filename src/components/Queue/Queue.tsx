@@ -11,15 +11,19 @@ export default function Queue() {
     const [songName, setName] = useState("Wanna find what's playing right now?")
     const [artistName, setArtist] = useState("Click on the Music Icon to record and find out!")
     const [ytLink, setYtLink] = useState("")
-
+    useEffect(()=>{
+        console.log(songName);
+        
+    }, [songName])
     useEffect(()=>{
 
         async function handleFound(event:any, data:any){
             console.log("found - s o n g ")
             data = data.slice(2,-3)
-            data = decodeURIComponent(data)
-            data = data.replace(/\\/g, '\\\\');
             console.log(data)
+            // data = decodeURIComponent(data)
+            // data = data.replace(/\\/g, '/');
+            data = Buffer.from(data, 'utf-8').toString()
             data = JSON.parse(data)
 
             

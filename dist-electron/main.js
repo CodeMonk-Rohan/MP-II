@@ -28,11 +28,17 @@ function setUpMouseListeners(win2) {
 }
 function createDataFolder() {
   console.log(dataFolderPath);
+  if (!fs.existsSync(userFile)) {
+    try {
+      fs.writeFileSync(userFile, "");
+    } catch (err) {
+      console.log("Error Creating userData.txt", err);
+    }
+  }
   if (!fs.existsSync(dataFolderPath)) {
     try {
       fs.mkdirSync(dataFolderPath);
       console.log("No Data Folder Found, Creating one now.");
-      fs.writeFileSync(userFile, "");
     } catch (err) {
       console.log("Error Creating Data folders", err);
     }
@@ -48,6 +54,8 @@ function fetchAllPlaylists() {
       if (MetaData.length === 0) {
         return;
       }
+      if (MetaData[0] === "" || MetaData[1] === void 0)
+        return;
       const url = MetaData[1];
       const name = MetaData[0];
       fileDataJSON.push({ name, url });

@@ -1,7 +1,0 @@
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\Testing\Camila Cabello - I LUV IT Feat. Playboi Carti (Official Music Video).m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\Testing\2Pac - Hit 'Em Up (Dirty) (Music Video) HD.m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\Testing\MC STΔN - SNAKE  (Official Music Video).m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\Testing\MC STΔN -  NUSTA PAISA  (Official Music Video) ｜ 2023.m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\Testing\MC STΔN - HOSH MAI AA ｜ TADIPAAR ｜ 2K20.m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\Testing\MC STΔN - 307 ｜ TADIPAAR ｜ 2K20.m4a
-C:\Users\Rohan\Desktop\VSC PROJECTS\MusicPLayer\MP-II\dist-electron\data\Testing\Luka Chippi.m4a

@@ -59,11 +59,22 @@ export function createDataFolder() {
   const subFolders = ["settings"];
   console.log(dataFolderPath);
 
+  if(!fs.existsSync(userFile)){
+    //if userdata.txt does not exist, we create it
+    try{
+      fs.writeFileSync(userFile, "");
+    }catch(err){
+      console.log("Error Creating userData.txt", err);
+    }
+  }
+
   if (!fs.existsSync(dataFolderPath)) {
+    //if data folder does not exist, we create it
     try {
+      
       fs.mkdirSync(dataFolderPath);
       console.log("No Data Folder Found, Creating one now.");
-      fs.writeFileSync(userFile, "");
+      
       // subFolders.forEach((subFolder)=>{
       //   const subFolderPath = path.join(dataFolderPath, subFolder)
       //   fs.mkdirSync(subFolderPath)
@@ -88,6 +99,7 @@ export function fetchAllPlaylists() {
       if (MetaData.length === 0) {
         return;
       }
+      if(MetaData[0] === '' || MetaData[1] === undefined) return;
       const url = MetaData[1];
       const name = MetaData[0];
       fileDataJSON.push({ name: name, url: url });
