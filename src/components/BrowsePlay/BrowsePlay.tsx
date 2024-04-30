@@ -3,8 +3,8 @@ import "../SearchBar/SearchBar.css";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
 import refresh from "../../assets/refresh.svg";
-import itemicon from "../../assets/item-card.svg";
-import plus from "../../assets/add1.svg";
+import itemicon from "../../assets/music-bars-svgrepo-com (2).svg";
+import plus from "../../assets/align-bottom-svgrepo-com.svg";
 import { song } from "../../App";
 import { FiSearch } from "react-icons/fi";
 
