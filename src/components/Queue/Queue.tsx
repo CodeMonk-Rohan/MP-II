@@ -22,11 +22,12 @@ export default function Queue() {
             data = data.slice(2,-3)
             console.log(data)
             // data = decodeURIComponent(data)
-            // data = data.replace(/\\/g, '/');
-            // data = Buffer.from(data, 'utf-8').toString()
-            data = decodeURI(data)
+            
             
             try{
+                data = data.replace(/\\/g, '/');
+                // data = Buffer.from(data, 'utf-8').toString()
+                data = decodeURI(data)
                 data = JSON.parse(data)
             }catch(err){
                 //Treating parsing failure as the same as not finding a song for now
@@ -47,7 +48,7 @@ export default function Queue() {
             }
             if(data.metadata){
                 if(data.status.msg === "Success"){
-                    setName(data.metadata.music[0].title)
+                    setName(data.metadata.music[0].title.slice(0, 30) + "...")
                     setArtist("By "+data.metadata.music[0].artists[0].name)
 
                     if(data.metadata.music[0].external_metadata){
@@ -101,6 +102,8 @@ export default function Queue() {
 
     async function recogniseAudio(){
         setName("Recording...")
+        setArtist("")
+        setYtLink("")
         setTimeout(()=>{
             setArtist("This can take a while...")
         }, 7000)
@@ -143,7 +146,7 @@ export default function Queue() {
                     </div>
                     {ytLink === "" ? <></> : <div className="link" onClick={()=>openBrowser(ytLink)}>
                         <img className="yt-icon" src={yticon}></img>
-                        <div>{songName}</div>
+                        <div>YouTube</div>
                     </div>}
                 </div>
         </motion.div>
