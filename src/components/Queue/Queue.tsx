@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Queue.css"
 import {motion} from "framer-motion"
 import yticon from "../../assets/YouTube_full-color_icon_(2017).svg"
-import recButton from "../../assets/home-button.svg"
+import recButton from "../../assets/music-bars-svgrepo-com (2).svg"
 
 export default function Queue() {
     

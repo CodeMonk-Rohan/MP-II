@@ -78,16 +78,20 @@
 }
 
 .rec-button{  
-    height: 40%;
-    width: 50%;
+    height: 45%;
+    width: 45%;
     position: relative;
     border: none;
     cursor: pointer;
     background-color: none;
     transition: all 0.2s ease;
-    border: 2px solid black;
-    border-radius: 100%;
 }
-.rec-button:active {
-    transform: scale(0.9);
-  }
+.rec-button:hover{
+    transform: scale(1.04);
+}
+.rec-button:active{
+    scale: 0.9;
+    opacity: 0.8;
+}
+
+
